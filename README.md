@@ -16,10 +16,10 @@ A tournament management and live streaming system built for esports events. Hand
 ## Screenshots
 
 ### Tournament Control Panel
-![Tournament Control](screenshots/Screenshot 2025-10-24 005142.png)
+![Tournament Control](screenshots/dash.png)
 
 ### Live Stream with Overlay
-![Live Stream](screenshots/Screenshot 2025-10-24 005210.png)
+![Live Stream](screenshots/reg.png)
 
 
 ## System Requirements
@@ -57,24 +57,12 @@ A tournament management and live streaming system built for esports events. Hand
 
 ## Architecture
 
-- Main server (`app.py`): Tournament logic, API endpoints
-- Stream server (`live.py`): HLS video streaming
-- WhatsApp service: Real-time notifications
+- Main server (`app.py`): Tournament logic, API endpoints, core of project
+- Stream server (`live.py`): HLS video streaming, to be deployed on each Device where match observer account is kept, to create stream sources
+- WhatsApp service: Whatsmeow based whatsapp notification service
 - Frontend: HTML/JS for control panels and overlays
-
-## Screenshots
-
-### Tournament Control Panel
-![Tournament Control](screenshots/control.jpg)
-
-### Live Stream with Overlay
-![Live Stream](screenshots/live.jpg)
+- SSE: Server side events for realtime website updates without refreshing.
 
 ## License
 
 MIT
-
-## Acknowledgments
-
-- ACM AJCE for project support
-- All participating teams and organizers
