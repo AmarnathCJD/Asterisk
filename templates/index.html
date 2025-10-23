@@ -1,0 +1,3029 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTERISK - ACM AJCE Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .payment-button {
+            background: #ff003c;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .payment-button:hover {
+            background: #ff335c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
+        }
+
+        /* ================= BASE STYLES ================= */
+        body {
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: auto;
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(0px);
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .cursor-dot {
+            width: 24px;
+            height: 24px;
+            background: none;
+            position: fixed;
+            z-index: 9999;
+        }
+
+        .cursor-dot::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 24px solid #ff003c;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, transform 0.1s linear;
+        }
+
+        .cursor-outline::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 40px solid rgba(255, 0, 60, 0.3);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+
+        body:hover .cursor-dot,
+        body:hover .cursor-outline {
+            opacity: 1;
+        }
+
+        a:hover~.cursor-outline,
+        button:hover~.cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: #00ffff;
+        }
+
+        /* Fonts */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Navbar */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.4);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Mobile menu button enhancement */
+        #mobile-menu-button {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.1), rgba(0, 255, 247, 0.1));
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-button:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.2), rgba(0, 255, 247, 0.2));
+            border-color: #ff003c;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.4);
+        }
+
+        #mobile-menu-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced mobile menu */
+        #mobile-menu {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 2px solid #ff003c;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 0, 60, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.show {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        #mobile-menu a {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ff003c, #00fff7);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu a:hover::before,
+        #mobile-menu a:active::before {
+            transform: translateX(0);
+        }
+
+        #mobile-menu a:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.15), transparent);
+            padding-left: 1.5rem;
+            color: #00fff7;
+        }
+
+        #mobile-menu a:last-child {
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ff003c, #e6003a);
+            border-left: none;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu a:last-child:hover {
+            background: linear-gradient(90deg, #ff335c, #ff003c);
+            padding-left: 1rem;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Mobile menu icons */
+        .mobile-menu-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a:hover .mobile-menu-icon {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: rgba(255, 0, 60, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+
+        .mobile-menu-icon svg {
+            color: #ff003c;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a:hover .mobile-menu-icon svg {
+            color: #ff3366;
+            filter: drop-shadow(0 0 8px rgba(255, 0, 60, 0.6));
+        }
+
+        /* Hero BG */
+        .hero-bg {
+            cursor: none;
+            position: relative;
+        }
+
+        #valorant-ranks-bg {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .valo-rank-icon {
+            position: absolute;
+            bottom: -150px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 20%;
+        }
+
+        /* Title Reveal */
+        .title-reveal {
+            color: #0ff;
+            border-color: #0077ff;
+            text-shadow: 0 0 10px #00adbd, 0 0 20px #009dff, 0 0 40px #0077ff;
+            animation: fadeInGlow 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Desktop: Remove glow and set white color for hero title */
+        @media (min-width: 769px) {
+            .title-reveal {
+                color: #fff !important;
+                text-shadow: none !important;
+            }
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                letter-spacing: 0.5em;
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                letter-spacing: normal;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff,
+                    0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c;
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff,
+                    0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c;
+            }
+        }
+
+        /* Slow pulse animation for Watch Live button */
+        @keyframes pulse-slow {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.9;
+                transform: scale(1.02);
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 2s ease-in-out infinite;
+        }
+
+        /* Countdown */
+        .countdown-box {
+            border: none;
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .section-title {
+            text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+        }
+
+        /* Events Section - Optimized */
+        #events {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 0, 20, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #events::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 60, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 247, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        #events .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            background: linear-gradient(90deg, #ff003c 0%, #00fff7 50%, #ff003c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+            text-shadow: 0 0 80px rgba(255, 0, 60, 0.5);
+            position: relative;
+            text-align: center;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Cards - 3D Holographic Effect */
+        .valorant-card {
+            position: relative;
+            overflow: hidden;
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            will-change: transform;
+        }
+
+        .valorant-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #ff003c, #00fff7);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .valorant-card:hover::before {
+            opacity: 0.4;
+        }
+
+        .valorant-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow:
+                0 30px 60px rgba(255, 0, 60, 0.4),
+                0 0 40px rgba(0, 255, 247, 0.3);
+            border-color: rgba(255, 0, 60, 0.6);
+        }
+
+        /* Glitch effect on hover */
+        .valorant-card:hover .card-title {
+            animation: glitch 0.5s infinite;
+        }
+
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+        }
+
+        /* Holographic overlay effect */
+        .valorant-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.05) 25%,
+                    transparent 35%,
+                    transparent 75%,
+                    rgba(0, 255, 247, 0.1) 100%);
+            transform: translateX(-100%) skewX(-15deg);
+            transition: transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .valorant-card:hover::after {
+            transform: translateX(200%) skewX(-15deg);
+        }
+
+        /* Scan line effect */
+        .valorant-card .card-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 255, 247, 0.03) 0px,
+                    transparent 2px,
+                    transparent 4px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .valorant-card:hover .card-content::before {
+            opacity: 1;
+        }
+
+        .card-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 110%;
+            height: 110%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.25;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: brightness(0.7) contrast(1.2);
+        }
+
+        .valorant-card:hover .card-bg-image {
+            opacity: 0.6;
+            transform: scale(1.15) translateZ(30px);
+            filter: brightness(1) contrast(1.3) saturate(1.2);
+        }
+
+        /* Add glow to background on hover */
+        .valorant-card .card-bg-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(255, 0, 60, 0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .valorant-card:hover .card-bg-image::after {
+            opacity: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-category {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(90deg, #ff003c, #00fff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .card-category::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #ff003c, transparent);
+            box-shadow: 0 0 10px #ff003c;
+        }
+
+        .card-title {
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 0, 60, 0.5),
+                0 0 30px rgba(0, 255, 247, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .valorant-card:hover .card-title {
+            text-shadow:
+                0 0 15px rgba(255, 255, 255, 1),
+                0 0 30px rgba(255, 0, 60, 0.8),
+                0 0 45px rgba(0, 255, 247, 0.6);
+            transform: translateZ(20px);
+        }
+
+        .card-description {
+            flex-grow: 1;
+        }
+
+        .card-button {
+            color: #fff;
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.18), rgba(0, 255, 247, 0.06));
+            border: 1px solid rgba(255, 0, 60, 0.6);
+            padding: 0.5rem 1rem;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            transition: background 0.3s ease;
+        }
+
+        .card-button:hover {
+            background: #ff003c;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Timeline */
+        .timeline-container {
+            position: relative;
+            padding-left: 3rem;
+            border-left: 2px solid rgba(255, 0, 60, 0.2);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            border-color: #ff003c;
+            box-shadow: 0 10px 25px rgba(255, 0, 60, 0.15);
+        }
+
+        .timeline-item:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: -3.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #0a0a0a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ff003c;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0);
+        }
+
+        .reveal.visible .timeline-icon {
+            animation: glowPulse 2s infinite;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 0, 60, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(255, 0, 60, 0.8);
+            }
+
+            100% {
+                box-shadow: 0 0 5px rgba(255, 0, 60, 0.5);
+            }
+        }
+
+        .timeline-time {
+            position: absolute;
+            left: 1.5rem;
+            top: -1rem;
+            background-color: #ff003c;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Sponsors */
+        .sponsor-logo {
+            filter: grayscale(100%) brightness(1.5);
+            transition: all 0.3s ease;
+        }
+
+        .sponsor-logo:hover {
+            filter: grayscale(0%) brightness(1);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            left: 0;
+            width: 100vw;
+            min-height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            align-items: flex-start;
+            justify-content: center;
+            /* Remove padding-top, let JS set top dynamically */
+        }
+
+        .modal-content {
+            background-color: #111;
+            border: 1px solid #ff003c;
+        }
+
+        /* About Section */
+        #about {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* About section particle canvas */
+        #about-particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            mix-blend-mode: screen;
+        }
+
+        /* About feature cards with gaming aesthetics - Optimized */
+        .about-feature-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-width 0.3s ease;
+            will-change: transform;
+        }
+
+        .about-feature-card:hover {
+            transform: scale(1.05) translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(255, 0, 60, 0.5),
+                0 0 30px rgba(0, 255, 247, 0.3);
+            border-width: 3px;
+        }
+
+        .about-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 0, 60, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: pan-grid 60s linear infinite;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #about.visible .about-grid-bg {
+            opacity: 1;
+        }
+
+        @keyframes pan-grid {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -800px -800px;
+            }
+        }
+
+        /* Heading */
+        .smallboy {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: #1ba8ff;
+            text-shadow: 0 0 5px #000000;
+            font-family: 'valorant', sans-serif;
+            opacity: 95%;
+            font-weight: 900;
+        }
+
+        /* ================= RESPONSIVE FIXES ================= */
+
+        /* Hide cursor on mobile/touch devices */
+        @media (hover: none) and (pointer: coarse) {
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .title-reveal {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .smallboy {
+                font-size: 1.5rem;
+                letter-spacing: 0.15em;
+            }
+
+            .timeline-container {
+                padding-left: 1.5rem;
+                border-left-width: 1px;
+            }
+
+            .timeline-icon {
+                left: -2.5rem;
+                width: 2rem;
+                height: 2rem;
+            }
+
+            .timeline-time {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+
+            /* Show logos in mobile menu */
+            .mobile-logos-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 1rem 1rem 1.5rem;
+                border-top: 1px solid rgba(255, 0, 60, 0.2);
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            .mobile-logo-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                transition: transform 0.3s ease;
+            }
+
+            .mobile-logo-item:hover {
+                transform: translateY(-3px);
+            }
+
+            .mobile-logo-item img {
+                height: 40px;
+                width: auto;
+                filter: drop-shadow(0 2px 8px rgba(255, 0, 60, 0.3));
+            }
+
+            .mobile-logo-item span {
+                font-size: 0.65rem;
+                color: #999;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                font-family: 'Rajdhani', sans-serif;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            /* Responsive background for mobile */
+            body {
+                background-image: url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png');
+                background-size: auto;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+
+            .title-reveal {
+                font-size: 1.8rem;
+            }
+
+            .smallboy {
+                font-size: 1.2rem;
+                text-align: center;
+                color: #009dff;
+            }
+
+            .valorant-card {
+                clip-path: none;
+                border-radius: 10px;
+            }
+
+            .card-content {
+                padding: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-description {
+                font-size: 0.9rem;
+            }
+
+            .card-button {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .timeline-container {
+                padding-left: 1rem;
+            }
+
+            .timeline-item {
+                padding: 1rem;
+            }
+
+            .timeline-icon {
+                display: none;
+            }
+
+            /* Countdown fixes for mobile screens */
+            #countdown {
+                gap: 0.5rem;
+            }
+
+            .countdown-box {
+                width: 65px;
+                min-width: 0;
+                padding: 0.5rem;
+                border: none;
+                box-shadow: none;
+            }
+
+            .countdown-box>div:first-child {
+                font-size: 1.5rem;
+            }
+
+            .countdown-box>div:last-child {
+                font-size: 0.65rem;
+            }
+
+            /* Desktop spacing for countdown */
+            @media (min-width: 769px) {
+                #countdown {
+                    gap: 2.5rem;
+                }
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .title-reveal {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .smallboy {
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .card-description {
+                font-size: 0.8rem;
+            }
+
+            .card-button {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .timeline-item {
+                font-size: 0.85rem;
+            }
+
+            /* Countdown fixes for small mobile screens */
+            #countdown {
+                gap: 0.5rem;
+                /* Reduce space between boxes */
+            }
+
+            .countdown-box {
+                width: 65px;
+                /* Make boxes smaller */
+                padding: 0.5rem;
+            }
+
+            .countdown-box>div:first-child {
+                /* The number */
+                font-size: 1.5rem;
+                /* ~text-2xl */
+            }
+
+            .countdown-box>div:last-child {
+                /* The label e.g., "Days" */
+                font-size: 0.65rem;
+            }
+        }
+
+        #register {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+
+        #desktop-bg-video {
+            animation: fadeInVideo 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hide about cards on mobile */
+        @media (max-width: 768px) {
+            #about .grid.md\:grid-cols-3 {
+                display: none;
+            }
+
+            #about .mb-16 {
+                margin-bottom: 0 !important;
+            }
+
+            /* Smooth section transitions for mobile */
+            section {
+                position: relative;
+            }
+
+            /* Add gradient overlays between sections */
+            section::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.3));
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            /* Enhance section backgrounds with subtle gradients */
+            #about {
+                background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
+            }
+
+            #events {
+                background: linear-gradient(180deg, #050505 0%, #0f0f0f 50%, #050505 100%) !important;
+            }
+
+            #schedule {
+                background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
+            }
+
+            #register {
+                background: linear-gradient(180deg, #050505 0%, #0f0f0f 50%, #050505 100%) !important;
+            }
+
+            #sponsors {
+                background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
+            }
+
+            /* Add subtle colored accent on section edges */
+            #about::after {
+                background: linear-gradient(to bottom, transparent, rgba(255, 0, 60, 0.05), transparent);
+                height: 80px;
+            }
+
+            #events::after {
+                background: linear-gradient(to bottom, transparent, rgba(0, 255, 247, 0.05), transparent);
+                height: 80px;
+            }
+
+            /* Increase padding for better spacing */
+            section {
+                padding-top: 3rem !important;
+                padding-bottom: 3rem !important;
+            }
+
+            /* Smoother text shadows on mobile */
+            h2,
+            h3 {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+            }
+        }
+
+        /* Enhanced section title animation */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(135deg, #ff003c 0%, #00fff7 50%, #ff003c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff003c, #00fff7, transparent);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.8), 0 0 40px rgba(0, 255, 247, 0.6);
+        }
+
+        /* Horizontal Marquee for Both Desktop & Mobile */
+        .bouncing-marquee {
+            position: absolute;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            background: rgba(255, 235, 59, 0.05);
+            border-top: 1px solid rgba(255, 235, 59, 0.3);
+            border-bottom: 1px solid rgba(255, 235, 59, 0.3);
+            padding: 8px 0;
+            z-index: 40;
+            pointer-events: auto;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marqueeScrollContinuous 40s linear infinite;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding-left: 100%;
+        }
+
+        .marquee-event-link {
+            display: inline-block;
+            color: #ffeb3b;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 4px 30px 4px 12px;
+            margin: 0 10px;
+            text-shadow:
+                0 0 15px rgba(255, 235, 59, 0.8),
+                0 0 30px rgba(255, 235, 59, 0.4),
+                1px 1px 3px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .marquee-event-link:hover {
+            color: #ff003c;
+            text-shadow:
+                0 0 15px rgba(255, 0, 60, 0.8),
+                0 0 30px rgba(255, 0, 60, 0.6);
+            background: rgba(255, 0, 60, 0.1);
+            transform: scale(1.05);
+        }
+
+        .marquee-event-link svg {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+            filter: drop-shadow(0 0 8px rgba(255, 235, 59, 0.8));
+            transition: all 0.3s ease;
+        }
+
+        .marquee-event-link:hover svg {
+            filter: drop-shadow(0 0 12px rgba(255, 0, 60, 0.9));
+            color: #ff003c;
+        }
+
+        @keyframes marqueeScrollContinuous {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Pause animation on hover */
+        .bouncing-marquee:hover .marquee-text {
+            animation-play-state: paused;
+        }
+
+        /* Mobile: Hide duplicate mobile marquee container */
+        @media (max-width: 768px) {
+            .mobile-marquee-container {
+                display: none;
+            }
+
+            .bouncing-marquee {
+                top: 75px;
+                padding: 6px 0;
+            }
+
+            .marquee-text {
+                font-size: 14px;
+            }
+
+            .marquee-event-link {
+                padding: 3px 20px 3px 8px;
+                margin: 0 8px;
+            }
+
+            .marquee-event-link svg {
+                width: 14px;
+                height: 14px;
+                margin-right: 6px;
+            }
+        }
+
+        /* Desktop: Hide mobile marquee */
+        .mobile-marquee-container {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .marquee-text {
+                font-size: 12px;
+                letter-spacing: 0.1em;
+            }
+
+            .marquee-event-link {
+                padding: 2px 15px 2px 6px;
+                margin: 0 6px;
+            }
+
+            .marquee-event-link svg {
+                width: 12px;
+                height: 12px;
+                margin-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <!-- Desktop video background -->
+    <video id="desktop-bg-video" playsinline autoplay muted loop preload="none"
+        style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;"
+        poster="https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.png">
+        <source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/409ab2fc369ba5e1fe50bac10c6676d7d1365a9f.mp4"
+            type="video/mp4">
+    </video>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center group">
+
+                <span class="text-2xl font-bold text-white ml-3"
+                    style="font-family: 'valorant', sans-serif;">ASTERISK</span>
+
+            </a>
+            <a><img src="https://envs.sh/Lau.png" alt="ASTERISK Logo" class="h-12 w-auto logo">
+            </a>
+            <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
+                <a href="#about" class="relative group py-1">
+                    <span>About</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="#events" class="relative group py-1">
+                    <span>Events</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="#schedule" class="relative group py-1">
+                    <span>Schedule</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="#sponsors" class="relative group py-1">
+                    <span>Sponsors</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="game.html" class="relative group py-1">
+                    <span>Rules</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="team.html" class="relative group py-1">
+                    <span>Team Login</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+            </div>
+            <img src="https://envs.sh/LaF.png" alt="ASTERISK Logo" class="h-12 w-auto logo">
+            <a href="#register"
+                class="hidden md:flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    style="color: white;">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5" />
+                </svg>
+                Register Now
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="md:hidden">
+            <a href="#about" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                        <path d="M12 16v-4m0-4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </span>About</a>
+            <a href="#events" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+                        <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>
+                </span>Events</a>
+            <a href="#schedule" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </span>Schedule</a>
+            <a href="#sponsors" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>Sponsors</a>
+            <a href="game.html" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M9 12h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </span>Rules</a>
+            <a href="team.html" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12.13a4 4 0 0 1 0 7.75" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>Team Login</a>
+            <a href="#register" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon"
+                    style="background: rgba(255, 0, 60, 0.2); border-color: rgba(255, 0, 60, 0.4);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="color: white;">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5" />
+                    </svg>
+                </span>Register Now</a>
+
+            <!-- Mobile Logos Section -->
+            <div class="mobile-logos-container">
+                <div class="mobile-logo-item">
+                    <img src="https://envs.sh/Lau.png" alt="ACM Logo">
+                    <span>ACM Chapter</span>
+                </div>
+                <div class="mobile-logo-item">
+                    <img src="https://envs.sh/LaF.png" alt="College Logo">
+                    <span>AJCE</span>
+                </div>
+            </div>
+
+            <!-- Quarterfinal Qualifiers - Compact Hero Block -->
+            <div class="mt-8 max-w-5xl mx-auto px-4">
+                <div class="valorant-card p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-left flex-shrink-0">
+                        <div class="card-category">Quarterfinal Qualifiers</div>
+                        <h3 class="text-lg md:text-2xl font-rajdhani font-bold text-white">Valorant — The Reckoning</h3>
+                        <p class="text-xs md:text-sm text-gray-300 mt-1 hidden md:block">Top 10 teams advancing to the
+                            quarterfinals. Catch the action live and support your favourites.</p>
+                    </div>
+
+                    <div class="w-full md:w-3/4">
+                        <style>
+                            /* Visibility and contrast fixes for qualifiers block */
+                            .qualifiers-hero {
+                                position: relative;
+                                z-index: 60;
+                            }
+
+                            .valorant-card.qualifiers-card {
+                                z-index: 70;
+                                position: relative;
+                                background: linear-gradient(180deg, rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0.7));
+                                border: 1px solid rgba(255, 0, 60, 0.22);
+                                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+                            }
+
+                            @media (max-width: 767px) {
+                                .qualifiers-hero {
+                                    padding-left: 0.6rem;
+                                    padding-right: 0.6rem;
+                                }
+                            }
+
+                            /* Compact qualifier badges */
+                            .qualifiers-row {
+                                display: flex;
+                                gap: 0.75rem;
+                                align-items: center;
+                            }
+
+                            .hide-scrollbar {
+                                -ms-overflow-style: none;
+                                scrollbar-width: none;
+                            }
+
+                            .hide-scrollbar::-webkit-scrollbar {
+                                display: none;
+                            }
+
+                            .team-badge {
+                                min-width: 10.5rem;
+                                /* comfortable touch target */
+                                display: flex;
+                                align-items: center;
+                                gap: 0.75rem;
+                                padding: 0.5rem 0.75rem;
+                                background: linear-gradient(90deg, rgba(255, 0, 60, 0.08), rgba(0, 255, 247, 0.03));
+                                border: 1px solid rgba(255, 0, 60, 0.15);
+                                border-radius: 12px;
+                                color: #fff;
+                                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+                                backdrop-filter: blur(6px);
+                                transition: transform 0.18s ease, box-shadow 0.18s ease;
+                            }
+
+                            .team-badge:hover {
+                                transform: translateY(-6px);
+                                box-shadow: 0 18px 40px rgba(255, 0, 60, 0.12);
+                            }
+
+                            .team-initial {
+                                width: 44px;
+                                height: 44px;
+                                border-radius: 999px;
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-weight: 700;
+                                color: #111;
+                                background: linear-gradient(180deg, #ff003c, #ff7a88);
+                                box-shadow: 0 6px 18px rgba(255, 0, 60, 0.12);
+                                font-family: 'Rajdhani', sans-serif;
+                            }
+
+                            .team-name {
+                                font-weight: 700;
+                                font-family: 'Rajdhani', sans-serif;
+                                color: #fff;
+                                font-size: 0.95rem;
+                            }
+
+                            .team-sub {
+                                font-size: 0.72rem;
+                                color: #cbd5e1;
+                                font-weight: 600;
+                            }
+
+                            /* Desktop: multi-column grid */
+                            @media (min-width: 768px) {
+                                .qualifiers-grid {
+                                    display: grid;
+                                    grid-template-columns: repeat(5, 1fr);
+                                    gap: 0.75rem;
+                                }
+
+                                .qualifiers-row {
+                                    display: block;
+                                    overflow: visible;
+                                }
+
+                                .team-badge {
+                                    min-width: 0;
+                                }
+                            }
+                        </style>
+
+                        <!-- Mobile: horizontal scroll with snap; Desktop: 5-column grid -->
+                        <div class="qualifiers-row hide-scrollbar overflow-x-auto snap-x snap-mandatory md:block">
+                            <div class="qualifiers-grid">
+                                <div class="team-badge">
+                                    <div class="team-initial">XL</div>
+                                    <div>
+                                        <div class="team-name">xlr8</div>
+                                        <div class="team-sub">Speed and precision</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">GC</div>
+                                    <div>
+                                        <div class="team-name">gods own country</div>
+                                        <div class="team-sub">Homegrown legends</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">GL</div>
+                                    <div>
+                                        <div class="team-name">go lose fast</div>
+                                        <div class="team-sub">Unpredictable force</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">HS</div>
+                                    <div>
+                                        <div class="team-name">hestoa</div>
+                                        <div class="team-sub">Tactical thinkers</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">SR</div>
+                                    <div>
+                                        <div class="team-name">spike rushers</div>
+                                        <div class="team-sub">Fast executes</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">ED</div>
+                                    <div>
+                                        <div class="team-name">esports divison nitc <span
+                                                style="color:#ff7a7a;font-weight:700;font-size:0.8rem;margin-left:6px;">(unable
+                                                to attend)</span></div>
+                                        <div class="team-sub">Collegiate powerhouse</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">DNA</div>
+                                    <div>
+                                        <div class="team-name">dna</div>
+                                        <div class="team-sub">Strategic playmakers</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">RG</div>
+                                    <div>
+                                        <div class="team-name">renegades</div>
+                                        <div class="team-sub">Relentless pressure</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">LB</div>
+                                    <div>
+                                        <div class="team-name">log baits</div>
+                                        <div class="team-sub">Mind games</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">VT</div>
+                                    <div>
+                                        <div class="team-name">vitality</div>
+                                        <div class="team-sub">Aggressive tempo</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">EX</div>
+                                    <div>
+                                        <div class="team-name">exodus</div>
+                                        <div class="team-sub">Alternate contender</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="min-h-screen flex items-center justify-center text-center hero-bg overflow-hidden">
+            <div id="valorant-ranks-bg" class="absolute top-0 left-0 w-full h-full z-0"></div>
+            <canvas id="hero-canvas"></canvas>
+
+            <!-- Horizontal Marquee Text with Clickable Events -->
+            <div class="bouncing-marquee" id="bouncingText">
+                <span class="marquee-text">
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="valorantModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z"
+                                fill="currentColor" />
+                        </svg>
+                        THE RECKONING - VALORANT TOURNAMENT
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="artModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        PIXEL CRAFT - GAME ART COMPETITION
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="workshopModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        DEV GENESIS - GAME DEVELOPMENT WORKSHOP
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="gamingRingModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        GAMING RIG - GAMING ZONE
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="talkModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        GUEST STREAMER INTERACTIVE SESSION
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="valorantModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z"
+                                fill="currentColor" />
+                        </svg>
+                        THE RECKONING - VALORANT TOURNAMENT
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="artModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        PIXEL CRAFT - GAME ART COMPETITION
+                    </a>
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="workshopModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        DEV GENESIS - GAME DEVELOPMENT WORKSHOP
+                    </a>
+                </span>
+            </div>
+
+            <div class="z-10 p-6 relative mt-20 sm:mt-16 md:mt-4">
+                <p class="text-xl md:text-2xl mt-4 tracking-widest uppercase smallboy">ACM AJCE PRESENTS</p>
+
+                <h1 class="text-7xl md:text-9xl font-audiowide font-black uppercase title-reveal"
+                    style="font-family: 'valorant', sans-serif;">
+                    ASTERISK
+                </h1>
+                <div id="countdown" class="flex justify-center space-x-2 md:space-x-4 mt-4 text-white">
+                    <div class="countdown-box rounded-lg">
+                        <div id="days" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Days</div>
+                    </div>
+                    <div class="countdown-box rounded-lg">
+                        <div id="hours" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Hours</div>
+                    </div>
+                    <div class="countdown-box rounded-lg">
+                        <div id="minutes" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Minutes</div>
+                    </div>
+                    <div class="countdown-box rounded-lg">
+                        <div id="seconds" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Seconds</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons - Aligned and Styled -->
+                <div class="mt-8 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                    <!-- View The Arenas Button -->
+                    <a href="#events"
+                        class="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-lg border border-red-400/50 hover:border-red-300 transition-all duration-300 hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:scale-[1.02] relative overflow-hidden">
+                        <!-- Shimmer effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700">
+                        </div>
+
+                        <!-- Arena Icon -->
+                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18.5c-4.28-1.12-7-5.2-7-9.5V8.3l7-3.11 7 3.11V11c0 4.3-2.72 8.38-7 9.5z" />
+                            <path d="M9.5 12.5L11 14l3.5-3.5" />
+                        </svg>
+
+                        <!-- Text -->
+                        <span
+                            class="relative font-rajdhani font-bold text-sm sm:text-base uppercase tracking-wide text-white">
+                            View The Arenas
+                        </span>
+
+                        <!-- Arrow Icon -->
+                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0 group-hover:translate-x-0.5 transition-transform"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+
+                        <!-- Sparkle -->
+                        <svg class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-pulse opacity-80"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </a>
+
+                    <!-- Watch Live Button -->
+                    <a href="live.html"
+                        class="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 rounded-lg border border-yellow-400/50 hover:border-yellow-300 transition-all duration-300 hover:shadow-[0_0_20px_rgba(251,191,36,0.6)] hover:scale-[1.02] relative overflow-hidden">
+                        <!-- Shimmer effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700">
+                        </div>
+
+                        <!-- LIVE dot -->
+                        <span class="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 flex-shrink-0">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-full w-full bg-red-600"></span>
+                        </span>
+
+                        <!-- Text -->
+                        <span
+                            class="relative font-rajdhani font-bold text-sm sm:text-base uppercase tracking-wide text-black">
+                            Watch Live
+                        </span>
+
+                        <!-- Play Icon -->
+                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-black flex-shrink-0 group-hover:translate-x-0.5 transition-transform"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+
+                        <!-- Sparkle -->
+                        <svg class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-pulse opacity-80"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-black relative overflow-hidden">
+            <canvas id="about-particles" aria-hidden="true"></canvas>
+            <div class="about-grid-bg"></div>
+
+            <!-- Floating orbs animation -->
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                <div class="floating-orb"
+                    style="top: 20%; left: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,0,60,0.3), transparent); animation: float 8s ease-in-out infinite;">
+                </div>
+                <div class="floating-orb"
+                    style="top: 60%; right: 15%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,255,247,0.3), transparent); animation: float 10s ease-in-out infinite 2s;">
+                </div>
+                <div class="floating-orb"
+                    style="bottom: 10%; left: 20%; width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,0,60,0.2), transparent); animation: float 7s ease-in-out infinite 1s;">
+                </div>
+            </div>
+
+            <div class="container mx-auto px-6 text-center reveal relative z-10">
+                <h2 class="text-4xl md:text-6xl font-rajdhani font-bold mb-12"
+                    style="letter-spacing:0.08em;background: linear-gradient(135deg, #ff003c 0%, #00fff7 50%, #ff003c 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 4s linear infinite; text-shadow: 0 0 80px rgba(255,0,60,0.8);">
+                    Where Code Meets Combat
+                </h2>
+
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-16 font-rajdhani"
+                    style="font-size:1.3rem;line-height:1.7;text-shadow:0 0 10px #ff003c,0 0 20px #00fff7;">
+                    <span style="color:#ff003c;font-weight:700;">ASTERISK</span> is not just an event; it's an <span
+                        style="color:#00fff7;font-weight:700;">arena</span> where the brightest minds in technology and
+                    the sharpest talents in gaming collide.<br>
+                    <span style="color:#fff;">For two electrifying days, the ACM Student Chapter at Amal Jyothi College
+                        of Engineering transforms into a hub of <span style="color:#ff003c;">innovation</span>, <span
+                            style="color:#00fff7;">competition</span>, and <span
+                            style="color:#fff;">creativity</span>.</span><br>
+                    <span style="color:#ff003c;">We're calling all creators, strategists, and tech enthusiasts to prove
+                        their mettle.</span>
+                </p>
+                <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <div class="about-feature-card p-6 rounded-xl border-2 border-[#ff003c] h-full shadow-2xl hover:scale-105 transition-all duration-300 relative overflow-hidden"
+                            style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://wallpapers.com/images/hd/cool-valorant-pictures-ky7u6zg4p1hzxtfe.jpg'); background-size: cover; background-position: center;">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#ff003c]/30 via-transparent to-transparent opacity-60">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 mx-auto mb-4 bg-[#ff003c]/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-[#ff003c] shadow-[0_0_20px_rgba(255,0,60,0.6)]">
+                                    <span class="text-3xl">🎯</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-rajdhani font-bold mb-3 text-[#ff003c] tracking-wide drop-shadow-[0_0_10px_rgba(255,0,60,0.8)]">
+                                    Elite Competition</h3>
+                                <p class="text-gray-100 font-rajdhani text-lg leading-relaxed drop-shadow-md">Face off
+                                    against top-tier talent in high-stakes tournaments with a <span
+                                        style="color:#ff003c;font-weight:700;text-shadow:0 0 10px rgba(255,0,60,0.8);">massive
+                                        prize pool</span> on the line.</p>
+                                <span
+                                    class="absolute top-2 right-2 text-xs bg-[#ff003c] text-white px-3 py-1 rounded-full font-bold animate-pulse shadow-lg">🔥
+                                    LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="about-feature-card p-6 rounded-xl border-2 border-[#ff003c] h-full shadow-2xl hover:scale-105 transition-all duration-300 relative overflow-hidden"
+                            style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800'); background-size: cover; background-position: center;">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#ff003c]/30 via-transparent to-transparent opacity-60">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 mx-auto mb-4 bg-[#ff003c]/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-[#ff003c] shadow-[0_0_20px_rgba(255,0,60,0.6)]">
+                                    <span class="text-3xl">🎨</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-rajdhani font-bold mb-3 text-[#ff003c] tracking-wide drop-shadow-[0_0_10px_rgba(255,0,60,0.8)]">
+                                    Creative Showcases</h3>
+                                <p class="text-gray-100 font-rajdhani text-lg leading-relaxed drop-shadow-md">Unleash
+                                    your <span
+                                        style="color:#ff003c;font-weight:700;text-shadow:0 0 10px rgba(255,0,60,0.8);">artistic
+                                        vision</span> in our digital design competitions and celebrate the aesthetics of
+                                    gaming.</p>
+                                <span
+                                    class="absolute top-2 right-2 text-xs bg-[#ff003c] text-white px-3 py-1 rounded-full font-bold animate-pulse shadow-lg">✨
+                                    NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <div class="about-feature-card p-6 rounded-xl border-2 border-[#ff003c] h-full shadow-2xl hover:scale-105 transition-all duration-300 relative overflow-hidden"
+                            style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800'); background-size: cover; background-position: center;">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#ff003c]/30 via-transparent to-transparent opacity-60">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 mx-auto mb-4 bg-[#ff003c]/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-[#ff003c] shadow-[0_0_20px_rgba(255,0,60,0.6)]">
+                                    <span class="text-3xl">💡</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-rajdhani font-bold mb-3 text-[#ff003c] tracking-wide drop-shadow-[0_0_10px_rgba(255,0,60,0.8)]">
+                                    Pro Insights</h3>
+                                <p class="text-gray-100 font-rajdhani text-lg leading-relaxed drop-shadow-md">Learn from
+                                    <span
+                                        style="color:#ff003c;font-weight:700;text-shadow:0 0 10px rgba(255,0,60,0.8);">industry
+                                        professionals</span> in exclusive workshops and gain invaluable insights from
+                                    guest speakers.
+                                </p>
+                                <span
+                                    class="absolute top-2 right-2 text-xs bg-[#ff003c] text-white px-3 py-1 rounded-full font-bold animate-pulse shadow-lg">🎓
+                                    PRO</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                @keyframes float {
+
+                    0%,
+                    100% {
+                        transform: translateY(0) scale(1);
+                        opacity: 0.3;
+                    }
+
+                    50% {
+                        transform: translateY(-30px) scale(1.1);
+                        opacity: 0.5;
+                    }
+                }
+
+                .floating-orb {
+                    position: absolute;
+                    border-radius: 50%;
+                    filter: blur(60px);
+                    pointer-events: none;
+                }
+            </style>
+        </section>
+
+        <section id="events" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-16 reveal text-center">⚔️ The
+                    Arenas ⚔️</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                    <div class="valorant-card reveal" style="transition-delay: 100ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/54d784be3db8503ec574ff45e912ea098cc10352-854x484.png');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">E-Sports</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">The Reckoning</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">High-stakes 5v5 tactical shooter
+                                action. Compete for a massive ₹40,000 prize pool.</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="valorantModal">View Ruleset &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 200ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://www.shutterstock.com/image-illustration/modern-couple-kissing-on-valentines-600nw-2258553649.jpg');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Creative</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Pixel Craft</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Design a compelling game concept, a
+                                unique character or a breathtaking scenery.</p>
+                            <button class="card-button event-details-btn mt-auto self-start" data-modal="artModal">View
+                                Guidelines &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 300ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://t4.ftcdn.net/jpg/10/77/40/35/360_F_1077403598_HLkTA0SOLunXAVGA1Viwp4eeBsSxZQQD.jpg');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Workshop</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Dev Genesis</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Learn from a professional as they
+                                guide you through the process of game creation.</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="workshopModal">Get Details &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 400ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://i.pinimg.com/736x/4f/60/a0/4f60a0e9d1c87a6a3dc5201c057df2d1.jpg');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Gaming Zone</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Gaming Rig</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Experience high-performance gaming on
+                                top-tier consoles. Relax and compete!</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="gamingRingModal">More Info &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 400ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6wJzuyaw6y-0HPyZIP4GgANst7iGOdBSOd1hW1k2FNI2wJvHlXNe2BO48xT9OgqTNMhE&usqp=CAU');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Tech Talk</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Interactive Session</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Something special is coming soon!</p>
+                            <button class="card-button event-details-btn mt-auto self-start" data-modal="talkModal">More
+                                Info &rarr;</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section id="schedule" class="py-20 bg-black">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold text-center mb-20 reveal text-white">Event
+                    Timeline</h2>
+                <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-x-16 gap-y-12">
+                    <div class="reveal">
+                        <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-8 pl-12 md:pl-0">17th October <span
+                                class="text-lg text-gray-400 block font-medium">Internal Events</span></h3>
+                        <div class="timeline-container">
+                            <div class="timeline-item reveal" style="transition-delay: 100ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">11:00 AM</span>
+                                <h4 class="font-bold text-white text-lg">Game Dev & Design Workshop</h4>
+                                <p class="text-gray-400 mt-1">An immersive session with an industry professional. From
+                                    concept to prototype.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 200ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">BOTH DAYS</span>
+                                <h4 class="font-bold text-white text-lg">Gaming Console Zone</h4>
+                                <p class="text-gray-400 mt-1">Two days of non-stop gaming on high-end consoles. Relax
+                                    and
+                                    compete!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-8 pl-12 md:pl-0">18th October <span
+                                class="text-lg text-gray-400 block font-medium">External Events</span></h3>
+                        <div class="timeline-container">
+                            <div class="timeline-item reveal" style="transition-delay: 100ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">9:00 AM</span>
+                                <h4 class="font-bold text-white text-lg">Registration & Check-in</h4>
+                                <p class="text-gray-400 mt-1">Final teams check in for The Reckoning tournament.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 200ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="currentColor" role="img" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <title>Valorant</title>
+                                        <path
+                                            d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z" />
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">10:00 AM</span>
+                                <h4 class="font-bold text-white text-lg">Tournament Begins</h4>
+                                <p class="text-gray-400 mt-1">The LAN finals for the Valorant tournament kick off.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 300ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">1:00 PM</span>
+                                <h4 class="font-bold text-white text-lg">Guest Streamer Session</h4>
+                                <p class="text-gray-400 mt-1">Meet & Greet with a prominent Malayalam streamer.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 400ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">2:00 PM</span>
+                                <h4 class="font-bold text-white text-lg">Grand Finals & Closing Ceremony</h4>
+                                <p class="text-gray-400 mt-1">The final showdown, followed by prize distribution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="register" class="py-20">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold mb-6 text-white">Join The Battle</h2>
+                <p class="text-gray-400 mb-8 max-w-xl mx-auto">Registration for "The Reckoning" Valorant tournament is
+                    now open. Assemble your team and fight for glory.</p>
+                <div class="bg-gray-900/50 p-6 rounded-lg inline-block border border-gray-700">
+                    <p class="text-lg font-bold">Registration Fee: <span class="text-red-500">₹100 per person</span></p>
+                    <p class="text-sm text-gray-400 mt-2">(5 + 1 substitute (Team of 6), ₹600 per team)</p>
+                </div>
+                <div class="mt-10">
+                    <a href="reg.html"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 text-lg rounded transition duration-300 shadow-lg shadow-red-500/30">
+                        Register Your Team Now
+                    </a>
+                    <p class="text-xs text-gray-600 mt-4">(You will be redirected to a Form)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sponsors" class="py-20 bg-black relative overflow-hidden">
+            <!-- Animated hexagon background -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute inset-0" style="background: 
+                    linear-gradient(30deg, transparent 48%, rgba(255,0,60,0.1) 49%, rgba(255,0,60,0.1) 51%, transparent 52%),
+                    linear-gradient(150deg, transparent 48%, rgba(0,255,247,0.1) 49%, rgba(0,255,247,0.1) 51%, transparent 52%),
+                    linear-gradient(90deg, transparent 48%, rgba(255,0,60,0.05) 49%, rgba(255,0,60,0.05) 51%, transparent 52%);
+                    background-size: 60px 104px;
+                    animation: hexMove 30s linear infinite;"></div>
+            </div>
+
+            <div class="container mx-auto px-6 text-center reveal relative z-10">
+                <h2 class="text-4xl md:text-6xl font-rajdhani font-bold mb-6 text-white">
+                    Official Sponsor
+                </h2>
+                <p class="text-gray-400 mb-12 text-lg font-rajdhani max-w-2xl mx-auto">
+                    Proudly supported by
+                </p>
+
+                <!-- Animated Sponsor Display with 3D Tilt Effect -->
+                <div class="sponsor-showcase">
+                    <div class="sponsor-card" id="sponsorCard">
+                        <div class="sponsor-shine"></div>
+                        <img src="https://envs.sh/1Q0.jpg" alt="EDIMANNICKAL EDGE OPTICALS" class="sponsor-image" />
+                        <div class="sponsor-name">EDIMANNICKAL EDGE OPTICALS</div>
+                        <div class="sponsor-glow-effect"></div>
+                    </div>
+                </div>
+
+                <!-- Infinite Scrolling Marquee -->
+                <div class="sponsor-marquee">
+                    <div class="marquee-content">
+                        <span class="marquee-text">EDIMANNICKAL EDGE OPTICALS</span>
+                        <span class="marquee-separator">•</span>
+                        <span class="marquee-text">OFFICIAL SPONSOR</span>
+                        <span class="marquee-separator">•</span>
+                        <span class="marquee-text">ASTERISK 2025</span>
+                        <span class="marquee-separator">•</span>
+                        <span class="marquee-text">EDIMANNICKAL EDGE OPTICALS</span>
+                        <span class="marquee-separator">•</span>
+                        <span class="marquee-text">OFFICIAL SPONSOR</span>
+                        <span class="marquee-separator">•</span>
+                        <span class="marquee-text">ASTERISK 2025</span>
+                        <span class="marquee-separator">•</span>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                @keyframes hexMove {
+                    0% {
+                        background-position: 0 0;
+                    }
+
+                    100% {
+                        background-position: 60px 104px;
+                    }
+                }
+
+                /* Sponsor Showcase with 3D Tilt */
+                .sponsor-showcase {
+                    perspective: 1500px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 3rem auto 4rem;
+                    max-width: 600px;
+                }
+
+                .sponsor-card {
+                    position: relative;
+                    background: linear-gradient(135deg, rgba(17, 17, 17, 0.9), rgba(30, 30, 30, 0.8));
+                    backdrop-filter: blur(20px);
+                    padding: 3rem;
+                    border-radius: 20px;
+                    border: 2px solid rgba(255, 0, 60, 0.3);
+                    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+                    transform-style: preserve-3d;
+                    cursor: pointer;
+                    overflow: hidden;
+                }
+
+                .sponsor-card:hover {
+                    transform: rotateY(5deg) rotateX(-5deg) scale(1.05);
+                    border-color: rgba(0, 255, 247, 0.8);
+                    box-shadow:
+                        0 25px 50px -12px rgba(0, 255, 247, 0.3),
+                        0 0 0 1px rgba(0, 255, 247, 0.2),
+                        inset 0 0 60px rgba(0, 255, 247, 0.05);
+                }
+
+                .sponsor-shine {
+                    position: absolute;
+                    top: -50%;
+                    left: -50%;
+                    width: 200%;
+                    height: 200%;
+                    background: linear-gradient(45deg,
+                            transparent 30%,
+                            rgba(255, 255, 255, 0.1) 50%,
+                            transparent 70%);
+                    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                    transition: transform 0.8s ease;
+                    pointer-events: none;
+                }
+
+                .sponsor-card:hover .sponsor-shine {
+                    transform: translateX(100%) translateY(100%) rotate(45deg);
+                }
+
+                .sponsor-image {
+                    width: 100%;
+                    max-width: 500px;
+                    height: auto;
+                    border-radius: 12px;
+                    transition: all 0.4s ease;
+                    filter: brightness(1.1) contrast(1.1);
+                    position: relative;
+                    z-index: 2;
+                }
+
+                .sponsor-card:hover .sponsor-image {
+                    filter: brightness(1.3) contrast(1.2);
+                    transform: translateZ(30px);
+                }
+
+                .sponsor-name {
+                    margin-top: 1.5rem;
+                    font-family: 'Rajdhani', sans-serif;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.15em;
+                    background: linear-gradient(135deg, #ff003c, #00fff7);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                    z-index: 2;
+                    transition: all 0.3s ease;
+                }
+
+                .sponsor-card:hover .sponsor-name {
+                    transform: translateZ(40px);
+                    text-shadow: 0 0 20px rgba(0, 255, 247, 0.5);
+                }
+
+                .sponsor-glow-effect {
+                    position: absolute;
+                    inset: -4px;
+                    background: linear-gradient(45deg, #ff003c, #00fff7, #ff003c, #00fff7);
+                    background-size: 300% 300%;
+                    border-radius: 20px;
+                    opacity: 0;
+                    filter: blur(20px);
+                    transition: opacity 0.6s ease;
+                    z-index: -1;
+                    animation: gradientShift 4s ease infinite;
+                }
+
+                .sponsor-card:hover .sponsor-glow-effect {
+                    opacity: 0.6;
+                }
+
+                @keyframes gradientShift {
+
+                    0%,
+                    100% {
+                        background-position: 0% 50%;
+                    }
+
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                }
+
+                /* Infinite Scrolling Marquee */
+                .sponsor-marquee {
+                    width: 100%;
+                    overflow: hidden;
+                    background: linear-gradient(90deg,
+                            transparent 0%,
+                            rgba(255, 0, 60, 0.1) 10%,
+                            rgba(0, 255, 247, 0.1) 50%,
+                            rgba(255, 0, 60, 0.1) 90%,
+                            transparent 100%);
+                    padding: 1.5rem 0;
+                    margin-top: 3rem;
+                    border-top: 1px solid rgba(255, 0, 60, 0.2);
+                    border-bottom: 1px solid rgba(0, 255, 247, 0.2);
+                    position: relative;
+                }
+
+                .marquee-content {
+                    display: flex;
+                    animation: marquee 20s linear infinite;
+                    white-space: nowrap;
+                    will-change: transform;
+                }
+
+                @keyframes marquee {
+                    0% {
+                        transform: translateX(0);
+                    }
+
+                    100% {
+                        transform: translateX(-50%);
+                    }
+                }
+
+                .marquee-text {
+                    font-family: 'Rajdhani', sans-serif;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.2em;
+                    background: linear-gradient(135deg, #ff003c, #ff6b6b, #00fff7, #ff003c);
+                    background-size: 200% 200%;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    animation: textGradient 3s ease infinite;
+                    margin: 0 2rem;
+                }
+
+                @keyframes textGradient {
+
+                    0%,
+                    100% {
+                        background-position: 0% 50%;
+                    }
+
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                }
+
+                .marquee-separator {
+                    color: rgba(255, 0, 60, 0.6);
+                    font-size: 1.5rem;
+                    margin: 0 1rem;
+                    animation: pulse 2s ease-in-out infinite;
+                }
+
+                @keyframes pulse {
+
+                    0%,
+                    100% {
+                        opacity: 0.4;
+                    }
+
+                    50% {
+                        opacity: 1;
+                    }
+                }
+
+                /* Mobile Responsive */
+                @media (max-width: 768px) {
+                    .sponsor-card {
+                        padding: 2rem 1.5rem;
+                    }
+
+                    .sponsor-name {
+                        font-size: 1rem;
+                    }
+
+                    .marquee-text {
+                        font-size: 1rem;
+                    }
+
+                    .sponsor-card:hover {
+                        transform: scale(1.02);
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .sponsor-showcase {
+                        margin: 2rem auto 3rem;
+                    }
+
+                    .sponsor-card {
+                        padding: 1.5rem 1rem;
+                    }
+
+                    .sponsor-name {
+                        font-size: 0.85rem;
+                        letter-spacing: 0.1em;
+                    }
+
+                    .marquee-text {
+                        font-size: 0.85rem;
+                        margin: 0 1rem;
+                    }
+                }
+            </style>
+
+            <script>
+                // Add 3D tilt effect on mouse move
+                const sponsorCard = document.getElementById('sponsorCard');
+                if (sponsorCard) {
+                    sponsorCard.addEventListener('mousemove', (e) => {
+                        const rect = sponsorCard.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+
+                        const rotateX = (y - centerY) / 10;
+                        const rotateY = (centerX - x) / 10;
+
+                        sponsorCard.style.transform = `
+                            perspective(1500px) 
+                            rotateX(${rotateX}deg) 
+                            rotateY(${rotateY}deg) 
+                            scale(1.05)
+                        `;
+                    });
+
+                    sponsorCard.addEventListener('mouseleave', () => {
+                        sponsorCard.style.transform = '';
+                    });
+                }
+            </script>
+        </section>
+    </main>
+
+    <footer class="py-16 relative overflow-hidden"
+        style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0"
+                style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;">
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4"
+                    style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #ff6b6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    ASTERISK 2025</h3>
+
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" class="social-icon-footer"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;"
+                        onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">📸</a>
+                    <a href="#" class="social-icon-footer"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;"
+                        onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">🐦</a>
+                    <a href="#" class="social-icon-footer"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;"
+                        onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">💼</a>
+                </div>
+
+                <!-- Divider -->
+                <div
+                    style="height:2px;background:linear-gradient(90deg, transparent, #ff003c, #ff6b6b, transparent);margin:2rem 0;opacity:0.3;">
+                </div>
+
+                <!-- Copyright -->
+                <p
+                    style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;color:#fff;letter-spacing:0.08em;margin-bottom:0.5rem;">
+                    &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
+                </p>
+
+                <!-- Credits -->
+                <p
+                    style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span
+                        style="color:#ff003c;font-weight:600;">Amal Benny Joseph</span>
+                </p>
+
+                <!-- Contact Info -->
+                <p
+                    style="color:#999;font-size:0.95rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    <span style="color:#ff003c;font-weight:600;">Edwin</span> - <a href="tel:+916282325276"
+                        style="color:#ddd;text-decoration:none;transition:color 0.3s ease;"
+                        onmouseover="this.style.color='#ff003c';" onmouseout="this.style.color='#ddd';">+91 62823
+                        25276</a>
+                </p>
+
+                <!-- Contact Button -->
+                <a href="tel:+916282325276"
+                    style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';"
+                    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎
+                    CALL US</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="valorantModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">The Reckoning: Rules</h3>
+            <div class="text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-bold text-white">Prize Pool:</h4>
+                    <p>₹40,000 Total (1st: ₹20k, 2nd: ₹13k, 3rd: ₹7k)</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Format:</h4>
+                    <p>Online qualifiers to select top 10 teams for the LAN finals on Oct 18th.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Server:</h4>
+                    <p>Mumbai</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">General Rules:</h4>
+                    <ul class="list-disc list-inside mt-2 text-gray-400">
+                        <li>No cheating, slurs, or harassment (verbal/physical).</li>
+                        <li>Mandatory screen recording by all players.</li>
+                        <li>Punctuality is key: 10-minute buffer for the entire team or face disqualification.</li>
+                        <li>Strictly no collusion or helping other teams.</li>
+                    </ul>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='reg.html'" class="payment-button">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="artModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Pixel Craft: Guidelines</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>Design a compelling game concept, a unique character or a breathtaking scenery. The genre and style
+                    are completely up to you. So use your preferred Digital Art or Traditional Art techniques to bring
+                    your vision to life.</p>
+                <div>
+                    <h4 class="font-bold text-white">Theme:</h4>
+                    <p>Open - Any genre or style</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Submission:</h4>
+                    <p>Submit high-resolution images (JPEG/PNG)</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Judging Criteria:</h4>
+                    <p>Originality, creativity, technical skill, and relevance to the theme.</p>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='https://e.ajce.in/g5l4oj'"
+                        class="payment-button">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="workshopModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Game Dev & Design Workshop</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>An exclusive internal event for AJCE students. Learn the ropes of game creation from a company
+                    professional.</p>
+                <div>
+                    <h4 class="font-bold text-white">Format:</h4>
+                    <p>A 45-minute TED Talk style session, followed by a Q&A.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Key Takeaways:</h4>
+                    <p>Gain practical skills and invaluable insights into the game development lifecycle, from initial
+                        concept to playable prototype.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Date & Time:</h4>
+                    <p>October 17th. Specific time to be announced.</p>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='https://e.ajce.in/x09hwy'"
+                        class="payment-button">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="gamingRingModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Gaming Rig</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>Two day event for all to play and experience high-end gaming consoles, Fastest Lap Prize, and
+                    more.
+                <div>
+                    <h4 class="font-bold text-white">Experience:</h4>
+                    <p>High-performance gaming on a variety of top-tier consoles. A fun, high-energy space to compete,
+                        relax, and discover new favorites.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Location:</h4>
+                    <p>To be announced on campus.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Availability:</h4>
+                    <p>Open on October 17th and 18th.</p>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='https://example.com/placeholder'"
+                        class="payment-button">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="talkModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Interactive Tech Talk</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>Another exclusive internal event for AJCE students. Drop in and Talk!</p>
+                <div>
+                    <h4 class="font-bold text-white">Experience:</h4>
+                    <p>Engage in thought-provoking discussions on the latest trends in technology and design.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Location:</h4>
+                    <p>To be announced on campus.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Availability:</h4>
+                    <p>Open throughout the day on October 18th.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ...existing code...
+            // Show custom cursor only in hero section
+            const hero = document.querySelector('.hero-bg');
+            function setCursorVisibility(e) {
+                const inHero = e.target.closest('.hero-bg') !== null;
+                cursorDot.style.display = inHero ? 'block' : 'none';
+                cursorOutline.style.display = inHero ? 'block' : 'none';
+            }
+            document.addEventListener('mousemove', setCursorVisibility, true);
+            // Lazy load and show video background only on desktop
+            function showDesktopBgVideo() {
+                const video = document.getElementById('desktop-bg-video');
+                if (window.innerWidth > 768) {
+                    video.style.display = 'block';
+                    video.load();
+                    video.play();
+                    // Only remove background image if it was set for desktop
+                    document.body.style.backgroundImage = '';
+                } else {
+                    video.style.display = 'none';
+
+                    document.body.style.backgroundImage = "url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png')";
+                    document.body.style.backgroundAttachment = 'fixed';
+                    document.body.style.backgroundColor = '#000';
+                }
+            }
+            showDesktopBgVideo();
+            window.addEventListener('resize', showDesktopBgVideo);
+
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            window.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
+                cursorOutline.animate({
+                    left: `${e.clientX}px`,
+                    top: `${e.clientY}px`
+                }, { duration: 500, fill: 'forwards' });
+            });
+
+            const ranksContainer = document.getElementById('valorant-ranks-bg');
+            const rankImages = [
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/3/largeicon.png',
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/12/largeicon.png',
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/18/largeicon.png',
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/24/largeicon.png'
+            ];
+            function createFloatingRanks() {
+                ranksContainer.innerHTML = '';
+                const rankCount = window.innerWidth < 768 ? 10 : 25;
+                for (let i = 0; i < rankCount; i++) {
+                    const rankIcon = document.createElement('img');
+                    rankIcon.classList.add('valo-rank-icon');
+                    rankIcon.src = rankImages[Math.floor(Math.random() * rankImages.length)];
+                    rankIcon.alt = "Valorant Rank Icon";
+                    const size = Math.random() * 80 + 20;
+                    rankIcon.style.cssText = `width:${size}px; height:${size}px; left:${Math.random() * 100}%; animation-duration:${Math.random() * 20 + 15}s; animation-delay:${Math.random() * 20}s; opacity:${(Math.random() * 0.15 + 0.05)}`;
+                    ranksContainer.appendChild(rankIcon);
+                }
+            }
+
+            // --- Interactive Background Canvas - IMPROVED EFFECT ---
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray;
+            const mouse = { x: null, y: null, radius: 150 };
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            function setupCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            setupCanvas();
+
+            window.addEventListener('resize', () => {
+                setupCanvas();
+                initParticles();
+                createFloatingRanks();
+            });
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                    this.speed = 0.5;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        this.x -= dx / 20 * this.speed; // Push away from mouse
+                        this.y -= dy / 20 * this.speed;
+                    } else {
+                        this.x += this.directionX * this.speed;
+                        this.y += this.directionY * this.speed;
+                    }
+                    this.draw();
+                }
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = Math.random() * 2 + 1;
+                    let x = Math.random() * canvas.width;
+                    let y = Math.random() * canvas.height;
+                    let directionX = (Math.random() * 0.4) - 0.2; // Slower, more ambient movement
+                    let directionY = (Math.random() * 0.4) - 0.2;
+                    let color = `rgba(255, 0, 60, ${Math.random() * 0.6 + 0.2})`;
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function animateParticles() {
+                requestAnimationFrame(animateParticles);
+                ctx.fillStyle = 'rgba(10, 10, 10, 0.1)'; // Trailing effect
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+            }
+
+            initParticles();
+            animateParticles();
+            createFloatingRanks();
+
+            const countdownDate = new Date("Oct 17, 2025 09:00:00").getTime();
+            const countdownFunction = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+                if (distance < 0) {
+                    clearInterval(countdownFunction);
+                    document.getElementById("countdown").innerHTML = `<div class="text-3xl font-rajdhani text-red-500">EVENT IS LIVE!</div>`;
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("days").innerText = days.toString().padStart(2, '0');
+                document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            }, 1000);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(elem => observer.observe(elem));
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target) && mobileMenu.classList.contains('show')) {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                }
+            });
+
+            const modalButtons = document.querySelectorAll('.event-details-btn');
+            const closeButtons = document.querySelectorAll('.close-btn');
+            modalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = document.getElementById(button.getAttribute('data-modal'));
+                    // Set modal top to current scroll position
+                    modal.style.top = window.scrollY + 'px';
+                    modal.style.display = 'flex';
+                });
+            });
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.closest('.modal').style.display = 'none';
+                });
+            });
+            window.addEventListener('click', (event) => {
+                if (event.target.classList.contains('modal')) event.target.style.display = 'none';
+            });
+
+            // About section particles (lightweight)
+            (function () {
+                const canvas = document.getElementById('about-particles');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let w = 0, h = 0, particles = [], rafId = null, running = false;
+
+                function resize() {
+                    const rect = canvas.getBoundingClientRect();
+                    w = Math.max(300, Math.floor(rect.width));
+                    h = Math.max(200, Math.floor(rect.height));
+                    canvas.width = w * devicePixelRatio;
+                    canvas.height = h * devicePixelRatio;
+                    canvas.style.width = rect.width + 'px';
+                    canvas.style.height = rect.height + 'px';
+                    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+                }
+
+                function createParticles(count) {
+                    particles = [];
+                    for (let i = 0; i < count; i++) {
+                        particles.push({
+                            x: Math.random() * w,
+                            y: Math.random() * h,
+                            r: Math.random() * 2 + 0.8,
+                            vx: (Math.random() - 0.5) * 0.4,
+                            vy: -Math.random() * 0.6 - 0.1,
+                            c: Math.random() > 0.6 ? 'rgba(255,0,60,0.9)' : 'rgba(0,255,247,0.9)'
+                        });
+                    }
+                }
+
+                function step() {
+                    ctx.clearRect(0, 0, w, h);
+                    for (let p of particles) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy -= 0.002; // gentle upward drift
+                        if (p.y + p.r < 0) p.y = h + p.r;
+                        if (p.x < -10) p.x = w + 10;
+                        if (p.x > w + 10) p.x = -10;
+                        ctx.beginPath();
+                        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+                        g.addColorStop(0, p.c);
+                        g.addColorStop(1, 'rgba(0,0,0,0)');
+                        ctx.fillStyle = g;
+                        ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    rafId = requestAnimationFrame(step);
+                }
+
+                function start() {
+                    if (running) return;
+                    running = true;
+                    resize();
+                    createParticles(Math.round((w * h) / 60000)); // scale particles with area
+                    step();
+                }
+
+                function stop() {
+                    running = false;
+                    if (rafId) cancelAnimationFrame(rafId);
+                    rafId = null;
+                    ctx.clearRect(0, 0, w, h);
+                }
+
+                // Observe about section visibility
+                const aboutSection = document.getElementById('about');
+                const aboutObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) start(); else stop();
+                    });
+                }, { threshold: 0.15 });
+                aboutObserver.observe(aboutSection);
+
+                // Resize handling
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        if (running) resize();
+                    }, 150);
+                });
+            })();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Control | ASTERISK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        :root {
+            --primary-red: #ff003c;
+            --primary-cyan: #00ffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .font-valorant {
+            font-family: 'Valorant', 'Rajdhani', sans-serif;
+        }
+
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .glassmorphic {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .card-clip {
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+        }
+
+        .btn-clip {
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-live {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification {
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-100 min-h-screen">
+    <!-- Background Overlay -->
+    <div class="fixed inset-0 bg-black/90 backdrop-blur-sm grid-pattern pointer-events-none z-0"></div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glassmorphic border border-red-500/30 rounded-xl p-8 max-w-md w-full card-clip">
+            <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-red-600 to-pink-600 flex items-center justify-center shadow-lg shadow-red-500/50">
+                    <span class="iconify text-white text-4xl" data-icon="mdi:shield-lock"></span>
+                </div>
+            </div>
+            <h2 class="font-valorant text-3xl text-center mb-2 text-white uppercase tracking-wider">Tournament Control</h2>
+            <p class="text-gray-400 text-center mb-6">Admin Authentication Required</p>
+            
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase tracking-wide">Password</label>
+                    <input type="password" id="authPassword" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-3 text-white outline-none transition-all" placeholder="Enter password" required autofocus>
+                </div>
+                
+                <div id="authError" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">
+                    Invalid password. Please try again.
+                </div>
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-rajdhani font-bold py-3 rounded-lg uppercase tracking-wider transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/50 btn-clip flex items-center justify-center gap-2">
+                    <span class="iconify" data-icon="mdi:login"></span>
+                    Access Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden relative z-10">
+        <!-- Header -->
+        <nav class="glassmorphic border-b border-red-500/20 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <h1 class="font-valorant text-xl sm:text-2xl text-white uppercase tracking-wider flex items-center gap-2">
+                        <span class="iconify text-red-500" data-icon="mdi:tournament"></span>
+                        <span class="hidden sm:inline">ASTERISK</span> CONTROL
+                    </h1>
+                    <div class="flex items-center gap-3">
+                        <a href="/game.html" class="flex items-center gap-2 text-white font-bold py-2 px-4 sm:px-6 rounded transition shadow-lg uppercase tracking-wider text-xs sm:text-sm font-rajdhani" style="background: linear-gradient(135deg, #00fff7, #00d9ff); border: 1px solid rgba(0, 255, 247, 0.5); box-shadow: 0 4px 15px rgba(0, 255, 247, 0.3);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="hidden sm:inline">Rules</span>
+                        </a>
+                        <button onclick="logout()" class="bg-red-600/80 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs sm:text-sm transition-all flex items-center gap-2 btn-clip">
+                            <span class="iconify" data-icon="mdi:logout"></span>
+                            <span class="hidden sm:inline">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="glassmorphic border border-red-500/20 hover:border-red-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-red-500 font-rajdhani" id="totalMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Total</div>
+                </div>
+                <div class="glassmorphic border border-blue-500/20 hover:border-blue-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-blue-400 font-rajdhani" id="upcomingMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Pending</div>
+                </div>
+                <div class="glassmorphic border border-red-500/20 hover:border-red-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-red-500 font-rajdhani status-live" id="liveMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Live</div>
+                </div>
+                <div class="glassmorphic border border-green-500/20 hover:border-green-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-green-400 font-rajdhani" id="completedMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Done</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-3">
+                <button onclick="showCreateMatchModal()" class="flex-1 sm:flex-none bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-4 sm:px-6 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all hover:scale-105 hover:shadow-lg hover:shadow-red-500/50 btn-clip flex items-center justify-center gap-2">
+                    <span class="iconify" data-icon="mdi:plus-circle"></span>
+                    <span class="hidden sm:inline">New Match</span>
+                    <span class="sm:hidden">New</span>
+                </button>
+                <button onclick="showBroadcastModal()" class="flex-1 sm:flex-none bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-600 text-white px-4 sm:px-6 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all hover:scale-105 hover:shadow-lg hover:shadow-green-500/50 btn-clip flex items-center justify-center gap-2">
+                    <span class="iconify" data-icon="mdi:whatsapp"></span>
+                    <span class="hidden sm:inline">Broadcast</span>
+                    <span class="sm:hidden">WhatsApp</span>
+                </button>
+            </div>
+
+            <!-- Matches List -->
+            <div class="glassmorphic border border-red-500/20 rounded-xl p-4 sm:p-6 card-clip">
+                <h2 class="font-rajdhani text-xl sm:text-2xl font-bold mb-4 uppercase tracking-wide flex items-center gap-2">
+                    <span class="iconify text-red-500" data-icon="mdi:sword-cross"></span>
+                    All Matches
+                </h2>
+                <div id="matchesList" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Match Modal -->
+    <div id="matchModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md z-50 p-4 overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="glassmorphic border border-red-500/30 rounded-xl p-6 max-w-2xl w-full card-clip">
+                <h3 class="font-rajdhani text-2xl font-bold mb-6 uppercase" id="modalTitle">Create Match</h3>
+                <form id="matchForm" class="space-y-4">
+                    <input type="hidden" id="matchId">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Round</label>
+                            <select id="matchRound" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" required>
+                                <option value="">Select Round</option>
+                                <option value="Round of 16">Round of 16</option>
+                                <option value="Quarterfinals">Quarterfinals</option>
+                                <option value="Semifinals">Semifinals</option>
+                                <option value="Grand Final">Grand Final</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Match #</label>
+                            <input type="text" id="matchNumber" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="M1" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Team 1</label>
+                            <input type="text" id="team1" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="Team name" required>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Seed</label>
+                            <input type="number" id="team1Seed" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="1" min="1">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Team 2</label>
+                            <input type="text" id="team2" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="Team name" required>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Seed</label>
+                            <input type="number" id="team2Seed" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="2" min="1">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Status</label>
+                            <select id="matchStatus" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" required>
+                                <option value="pending">Pending</option>
+                                <option value="live">Live</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Winner</label>
+                            <input type="text" id="matchWinner" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="If completed">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" onclick="closeMatchModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all">
+                            Cancel
+                        </button>
+                        <button type="submit" class="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all btn-clip">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Broadcast Modal -->
+    <div id="broadcastModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md z-50 p-4 overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="glassmorphic border border-red-500/30 rounded-xl p-6 max-w-2xl w-full card-clip">
+                <h3 class="font-rajdhani text-2xl font-bold mb-6 uppercase flex items-center gap-2">
+                    <span class="iconify text-green-500" data-icon="mdi:whatsapp"></span>
+                    Broadcast WhatsApp
+                </h3>
+                <form id="broadcastForm" class="space-y-4">
+                    <div>
+                        <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Message</label>
+                        <textarea id="broadcastMessage" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-3 text-white outline-none resize-none" rows="6" placeholder="Enter message..." required></textarea>
+                        <p class="text-xs text-gray-500 mt-2">Sent to all team leads via WhatsApp</p>
+                    </div>
+
+                    <div id="broadcastProgress" class="hidden bg-black/40 border border-cyan-500/30 rounded-lg p-4">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Broadcasting...</span>
+                            <span id="broadcastStatus">0 / 0</span>
+                        </div>
+                        <div class="bg-gray-700 rounded-full h-2 overflow-hidden">
+                            <div id="broadcastProgressBar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                        <div id="broadcastResults" class="mt-4 max-h-40 overflow-y-auto space-y-1 text-sm"></div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="closeBroadcastModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all">
+                            Cancel
+                        </button>
+                        <button type="submit" id="broadcastBtn" class="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all btn-clip flex items-center justify-center gap-2">
+                            <span class="iconify" data-icon="mdi:send"></span>
+                            Send
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const API_BASE = "https://30c61382b1f2.ngrok-free.app";
+    let authToken = localStorage.getItem('adminToken');
+    // Keep the latest matches in memory to support per-team actions
+    let currentMatches = [];
+
+        // Auth
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('authPassword').value;
+            const errorDiv = document.getElementById('authError');
+            
+            try {
+                const response = await fetch(`${API_BASE}/key`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    authToken = data.token;
+                    localStorage.setItem('adminToken', authToken);
+                    document.getElementById('authModal').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    loadMatches();
+                    showNotification('✅ Login successful!', 'success');
+                } else {
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Connection error. Please try again.';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        function logout() {
+            if (confirm('Logout?')) {
+                localStorage.removeItem('adminToken');
+                authToken = null;
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('authModal').classList.remove('hidden');
+            }
+        }
+
+        if (authToken) {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            loadMatches();
+        }
+
+        // Load matches
+        async function loadMatches() {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches`, {
+                    headers: {'X-Auth-Token': authToken}
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                            currentMatches = data.matches;
+                            displayMatches(data.matches);
+                    updateStats(data.matches);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayMatches(matches) {
+            const container = document.getElementById('matchesList');
+            
+            if (matches.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-gray-500">No matches yet</div>';
+                return;
+            }
+
+            container.innerHTML = matches.map(match => {
+                const statusColors = {
+                    pending: 'blue',
+                    live: 'red',
+                    completed: 'green'
+                };
+                const color = statusColors[match.status] || 'gray';
+                
+                // Determine if teams are eliminated (losers)
+                const team1IsWinner = match.winner === match.team1;
+                const team2IsWinner = match.winner === match.team2;
+                const team1Classes = match.winner && !team1IsWinner ? 'opacity-50 line-through text-gray-600' : '';
+                const team2Classes = match.winner && !team2IsWinner ? 'opacity-50 line-through text-gray-600' : '';
+                const winnerHighlight = match.winner ? 'text-green-400 font-extrabold' : '';
+                
+                // Highlight ongoing matches
+                const matchHighlight = match.status === 'live' ? 'ring-2 ring-red-500 bg-red-900/20' : '';
+                
+                return `
+                    <div class="bg-black/40 border border-${color}-500/20 hover:border-${color}-500/50 rounded-lg p-4 transition-all ${matchHighlight}">
+                        <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-rajdhani font-bold text-${color}-500">${match.match_number || 'Match'}</span>
+                                <span class="text-sm text-gray-400">${match.round}</span>
+                                ${match.court ? `<span class="text-xs text-cyan-400 px-2 py-0.5 bg-cyan-500/10 rounded border border-cyan-500/30">Court ${match.court}</span>` : ''}
+                                ${match.time_slot ? `<span class="text-xs text-purple-400 px-2 py-0.5 bg-purple-500/10 rounded border border-purple-500/30">${match.time_slot}</span>` : ''}
+                                <span class="px-2 py-1 bg-${color}-500/20 text-${color}-400 text-xs font-bold uppercase rounded border border-${color}-500/30 ${match.status === 'live' ? 'status-live' : ''}">${match.status}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                ${match.status !== 'completed' ? `<button onclick="setMatchLive('${match._id}')" class="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">Set Live</button>` : ''}
+                                <button onclick="editMatch('${match._id}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs font-rajdhani font-bold uppercase transition-all">Edit</button>
+                                <button onclick="deleteMatch('${match._id}')" class="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">Del</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center">
+                            <div class="text-right">
+                                <div class="flex items-center gap-2 justify-end">
+                                    <div class="font-rajdhani font-bold ${team1Classes} ${team1IsWinner ? winnerHighlight : ''}">${match.team1}</div>
+                                    <button onclick="sendWhatsAppToTeam('${match._id}', 1)" title="Message Team 1" class="text-green-400 hover:text-green-300 transition text-sm">
+                                        <span class="iconify" data-icon="mdi:whatsapp"></span>
+                                    </button>
+                                </div>
+                                ${match.team1_seed ? `<div class="text-xs text-gray-500">Seed ${match.team1_seed}</div>` : ''}
+                                ${match.team1_score !== undefined ? `<div class="text-xs text-cyan-400 font-bold mt-1">Score: ${match.team1_score}</div>` : ''}
+                            </div>
+                            <div class="text-center font-valorant text-yellow-500 text-lg">VS</div>
+                            <div class="text-left">
+                                <div class="flex items-center gap-2">
+                                    <button onclick="sendWhatsAppToTeam('${match._id}', 2)" title="Message Team 2" class="text-green-400 hover:text-green-300 transition text-sm">
+                                        <span class="iconify" data-icon="mdi:whatsapp"></span>
+                                    </button>
+                                    <div class="font-rajdhani font-bold ${team2Classes} ${team2IsWinner ? winnerHighlight : ''}">${match.team2}</div>
+                                </div>
+                                ${match.team2_seed ? `<div class="text-xs text-gray-500">Seed ${match.team2_seed}</div>` : ''}
+                                ${match.team2_score !== undefined ? `<div class="text-xs text-cyan-400 font-bold mt-1">Score: ${match.team2_score}</div>` : ''}
+                            </div>
+                        </div>
+                        ${match.winner ? `
+                            <div class="mt-3 pt-3 border-t border-white/10 text-center text-sm text-gray-400">
+                                Winner: <span class="text-green-400 font-bold">${match.winner}</span>
+                                ${match.status === 'completed' && match.round === 'Round of 18' ? `
+                                    <button onclick="advanceWinner('${match._id}', '${match.winner}')" class="ml-3 px-3 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">
+                                        Advance to QF
+                                    </button>
+                                ` : ''}
+                            </div>
+                        ` : `
+                            <div class="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2">
+                                <button onclick="setWinner('${match._id}', '${match.team1}')" class="px-3 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">
+                                    ${match.team1} Wins
+                                </button>
+                                <button onclick="setWinner('${match._id}', '${match.team2}')" class="px-3 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">
+                                    ${match.team2} Wins
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStats(matches) {
+            document.getElementById('totalMatches').textContent = matches.length;
+            document.getElementById('upcomingMatches').textContent = matches.filter(m => m.status === 'pending' || m.status === 'upcoming').length;
+            document.getElementById('liveMatches').textContent = matches.filter(m => m.status === 'live').length;
+            document.getElementById('completedMatches').textContent = matches.filter(m => m.status === 'completed').length;
+        }
+
+        // Match modal
+        function showCreateMatchModal() {
+            document.getElementById('modalTitle').textContent = 'Create Match';
+            document.getElementById('matchForm').reset();
+            document.getElementById('matchId').value = '';
+            document.getElementById('matchModal').classList.remove('hidden');
+        }
+
+        async function editMatch(matchId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches`, {
+                    headers: {'X-Auth-Token': authToken}
+                });
+                const data = await response.json();
+                const match = data.matches.find(m => m._id === matchId);
+                
+                if (match) {
+                    document.getElementById('modalTitle').textContent = 'Edit Match';
+                    document.getElementById('matchId').value = match._id;
+                    document.getElementById('matchRound').value = match.round;
+                    document.getElementById('matchNumber').value = match.match_number;
+                    document.getElementById('team1').value = match.team1;
+                    document.getElementById('team1Seed').value = match.team1_seed || '';
+                    document.getElementById('team2').value = match.team2;
+                    document.getElementById('team2Seed').value = match.team2_seed || '';
+                    document.getElementById('matchStatus').value = match.status;
+                    document.getElementById('matchWinner').value = match.winner || '';
+                    document.getElementById('matchModal').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function closeMatchModal() {
+            document.getElementById('matchModal').classList.add('hidden');
+        }
+
+        document.getElementById('matchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const matchId = document.getElementById('matchId').value;
+            const matchData = {
+                round: document.getElementById('matchRound').value,
+                match_number: document.getElementById('matchNumber').value,
+                team1: document.getElementById('team1').value,
+                team1_seed: parseInt(document.getElementById('team1Seed').value) || null,
+                team2: document.getElementById('team2').value,
+                team2_seed: parseInt(document.getElementById('team2Seed').value) || null,
+                status: document.getElementById('matchStatus').value,
+                winner: document.getElementById('matchWinner').value || null
+            };
+
+            try {
+                const url = matchId ? `${API_BASE}/api/matches/${matchId}` : `${API_BASE}/api/matches`;
+                const method = matchId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify(matchData)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    closeMatchModal();
+                    loadMatches();
+                    showNotification(matchId ? '✅ Match updated!' : '✅ Match created!', 'success');
+                }
+            } catch (error) {
+                showNotification('❌ Error saving match', 'error');
+            }
+        });
+
+        async function deleteMatch(matchId) {
+            if (!confirm('Delete this match?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
+                    method: 'DELETE',
+                    headers: {'X-Auth-Token': authToken}
+                });
+
+                if (response.ok) {
+                    loadMatches();
+                    showNotification('✅ Match deleted', 'success');
+                }
+            } catch (error) {
+                showNotification('❌ Error deleting match', 'error');
+            }
+        }
+
+        // Set match as live
+        async function setMatchLive(matchId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({ status: 'live' })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadMatches();
+                    showNotification('🔴 Match is now LIVE!', 'success');
+                }
+            } catch (error) {
+                showNotification('❌ Error setting match live', 'error');
+            }
+        }
+
+        // Set winner for a match
+        async function setWinner(matchId, winner) {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({ 
+                        winner: winner,
+                        status: 'completed'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadMatches();
+                    showNotification(`✅ ${winner} wins!`, 'success');
+                }
+            } catch (error) {
+                showNotification('❌ Error setting winner', 'error');
+            }
+        }
+
+        // Advance winner to next round
+        async function advanceWinner(matchId, winner) {
+            if (!confirm(`Advance ${winner} to Quarterfinals?`)) return;
+            
+            try {
+                // This would create or update a quarterfinal match
+                // For now, just show notification - you can implement the backend logic
+                showNotification(`✅ ${winner} advanced to Quarterfinals!`, 'success');
+                
+                // TODO: Implement backend endpoint for advancing teams
+                // const response = await fetch(`${API_BASE}/api/tournament/advance-team`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'X-Auth-Token': authToken
+                //     },
+                //     body: JSON.stringify({ 
+                //         matchId: matchId,
+                //         winner: winner,
+                //         targetRound: 'Quarterfinals'
+                //     })
+                // });
+            } catch (error) {
+                showNotification('❌ Error advancing team', 'error');
+            }
+        }
+
+        // Broadcast
+        function showBroadcastModal() {
+            document.getElementById('broadcastForm').reset();
+            document.getElementById('broadcastProgress').classList.add('hidden');
+            document.getElementById('broadcastModal').classList.remove('hidden');
+        }
+
+        function closeBroadcastModal() {
+            document.getElementById('broadcastModal').classList.add('hidden');
+        }
+
+        document.getElementById('broadcastForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const message = document.getElementById('broadcastMessage').value.trim();
+            if (!confirm('Send to ALL teams?')) return;
+            
+            const progressDiv = document.getElementById('broadcastProgress');
+            const resultsDiv = document.getElementById('broadcastResults');
+            const broadcastBtn = document.getElementById('broadcastBtn');
+            
+            progressDiv.classList.remove('hidden');
+            broadcastBtn.disabled = true;
+            broadcastBtn.innerHTML = '<span class="iconify animate-spin" data-icon="mdi:loading"></span> Sending...';
+            resultsDiv.innerHTML = '';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/broadcast-whatsapp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('broadcastProgressBar').style.width = '100%';
+                    document.getElementById('broadcastStatus').textContent = `${data.total_sent} sent, ${data.total_failed} failed`;
+                    
+                    resultsDiv.innerHTML = '<div class="font-bold mb-1">Results:</div>';
+                    data.results.forEach(result => {
+                        const icon = result.status === 'sent' ? '✅' : '❌';
+                        const color = result.status === 'sent' ? 'text-green-400' : 'text-red-400';
+                        resultsDiv.innerHTML += `<div class="${color}">${icon} ${result.team}</div>`;
+                    });
+                    
+                    broadcastBtn.innerHTML = '✅ Complete';
+                    setTimeout(() => closeBroadcastModal(), 5000);
+                }
+            } catch (error) {
+                showNotification('❌ Error broadcasting', 'error');
+                broadcastBtn.disabled = false;
+                broadcastBtn.innerHTML = '<span class="iconify" data-icon="mdi:send"></span> Send';
+            }
+        });
+
+        // Notification
+        function showNotification(message, type = 'success') {
+            const div = document.createElement('div');
+            div.className = `notification fixed top-20 right-4 z-50 glassmorphic border ${type === 'success' ? 'border-green-500/50' : 'border-red-500/50'} rounded-lg px-6 py-3 shadow-lg flex items-center gap-3`;
+            
+            const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
+            const iconColor = type === 'success' ? 'text-green-400' : 'text-red-400';
+            
+            div.innerHTML = `
+                <span class="iconify ${iconColor} text-xl" data-icon="${icon}"></span>
+                <span class="font-rajdhani font-semibold">${message}</span>
+            `;
+            
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
+        }
+
+        // Helper: try to get team phone number from match object or prompt admin
+        function getTeamPhone(matchId, teamIndex) {
+            const match = currentMatches.find(m => m._id === matchId);
+            if (!match) return null;
+
+            // Commonly stored fields: team1_phone, team2_phone, contacts
+            if (teamIndex === 1) {
+                if (match.team1_phone) return match.team1_phone;
+                if (match.team1_contact) return match.team1_contact;
+            } else {
+                if (match.team2_phone) return match.team2_phone;
+                if (match.team2_contact) return match.team2_contact;
+            }
+
+            // Fallback: try contacts array
+            if (Array.isArray(match.contacts)) {
+                const c = match.contacts.find(c => c.team === (teamIndex === 1 ? match.team1 : match.team2));
+                if (c && c.phone) return c.phone;
+            }
+
+            return null;
+        }
+
+        // Open WhatsApp chat with prefilled message (web.whatsapp.com / wa.me). phone should be in international format without + or spaces.
+        function openWhatsAppToNumber(phone, message) {
+            if (!phone) return;
+            // Normalize phone: remove spaces, +, dashes
+            const normalized = phone.replace(/[\s+\-()]/g, '');
+            const encoded = encodeURIComponent(message || '');
+            const url = `https://wa.me/${normalized}?text=${encoded}`;
+            window.open(url, '_blank');
+        }
+
+        // Send WhatsApp to a team by matchId and team index (1 or 2)
+        function sendWhatsAppToTeam(matchId, teamIndex) {
+            const match = currentMatches.find(m => m._id === matchId);
+            if (!match) return showNotification('Match not found', 'error');
+
+            const teamName = teamIndex === 1 ? match.team1 : match.team2;
+            let phone = getTeamPhone(matchId, teamIndex);
+
+            if (!phone) {
+                // Prompt admin to enter phone number
+                phone = prompt(`Enter phone number for ${teamName} (in international format, e.g. 918123456789)`);
+                if (!phone) return;
+            }
+
+            const defaultMsg = `Hello ${teamName},\nThis is from ASTERISK tournament admin. Your match: ${match.match_number || ''} - ${match.round || ''}. Please be ready.`;
+            const custom = prompt('Edit message to send (optional):', defaultMsg) || defaultMsg;
+
+            openWhatsAppToNumber(phone, custom);
+            showNotification(`Opening WhatsApp for ${teamName}`, 'success');
+        }
+
+        // SSE
+        const eventSource = new EventSource(`${API_BASE}/api/sse`);
+        eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type?.includes('match')) loadMatches();
+            } catch (error) {
+                console.error('SSE error:', error);
+            }
+        };
+
+        console.log('🎮 Control panel ready');
+    </script>
+</body>
+</html>

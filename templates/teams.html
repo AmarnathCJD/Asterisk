@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Status - ASTRISK | ACM AJCE Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ================= BASE STYLES ================= */
+        :root {
+            --primary-red: #ff003c;
+            --primary-blue: #00ffff;
+            --dark-bg: #0a0a0a;
+        }
+
+        body {
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(6px);
+            background-color: #000000;
+        }
+
+        /* Fonts */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Navbar */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.4);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Mobile menu button */
+        #mobile-menu-button {
+            position: relative;
+            z-index: 1000;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-button:hover {
+            background: rgba(255, 0, 60, 0.1);
+            transform: scale(1.05);
+        }
+
+        #mobile-menu-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced mobile menu */
+        #mobile-menu {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 2px solid #ff003c;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 0, 60, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.show {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        #mobile-menu a {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        #mobile-menu button {
+            display: flex;
+            align-items: center;
+        }
+
+        #mobile-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ff003c, #00fff7);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu a:hover::before,
+        #mobile-menu a:active::before {
+            transform: translateX(0);
+        }
+
+        #mobile-menu a:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.15), transparent);
+            padding-left: 1.5rem;
+            color: #00fff7;
+        }
+
+        #mobile-menu a:last-child {
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ff003c, #e6003a);
+            border-left: none;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu a:last-child:hover {
+            background: linear-gradient(90deg, #ff335c, #ff003c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
+        }
+        
+        /* Special styling for Go Back button icon */
+        #mobile-menu a:last-child .mobile-menu-icon {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #mobile-menu a:last-child .mobile-menu-icon svg {
+            color: #ffffff;
+        }
+        
+        #mobile-menu a:last-child:hover .mobile-menu-icon {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        #mobile-menu a:last-child:hover .mobile-menu-icon svg {
+            color: #ffffff;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+        }
+
+        /* Mobile menu icons */
+        .mobile-menu-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a:hover .mobile-menu-icon,
+        #mobile-menu button:hover .mobile-menu-icon {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: rgba(255, 0, 60, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+
+        .mobile-menu-icon svg {
+            color: #ff003c;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a:hover .mobile-menu-icon svg,
+        #mobile-menu button:hover .mobile-menu-icon svg {
+            color: #ff3366;
+            filter: drop-shadow(0 0 8px rgba(255, 0, 60, 0.6));
+        }
+
+        /* Hero BG */
+        .hero-bg {
+            cursor: none;
+            position: relative;
+        }
+
+        #valorant-ranks-bg {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .valo-rank-icon {
+            position: absolute;
+            bottom: -150px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 20%;
+        }
+
+        /* Title Reveal */
+        .title-reveal {
+            color: #0ff;
+            border-color: #0077ff;
+            text-shadow: 0 0 10px #00adbd, 0 0 20px #009dff, 0 0 40px #0077ff;
+            animation: fadeInGlow 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Desktop: Remove glow and set white color for hero title */
+        @media (min-width: 769px) {
+            .title-reveal {
+                color: #fff !important;
+                text-shadow: none !important;
+            }
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                letter-spacing: 0.5em;
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                letter-spacing: normal;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff,
+                    0 0 20px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red);
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff,
+                    0 0 30px var(--primary-red), 0 0 40px var(--primary-red), 0 0 50px var(--primary-red);
+            }
+        }
+
+        /* Countdown */
+        .countdown-box {
+            border: none;
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .section-title {
+            text-shadow: 0 0 10px var(--primary-red), 0 0 20px var(--primary-red);
+        }
+
+        /* Registration Form */
+        .registration-container {
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 0, 60, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(255, 0, 60, 0.2);
+        }
+
+    /* Enhanced Team Cards */
+        .team-card {
+            background: linear-gradient(145deg, rgba(10, 10, 12, 0.85), rgba(6, 6, 8, 0.9));
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(255, 0, 60, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .team-card:hover {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
+            border-color: rgba(255, 0, 60, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(255, 0, 60, 0.3),
+                        0 0 0 1px rgba(255, 0, 60, 0.1) inset;
+        }
+
+        .team-card:hover::before {
+            opacity: 1;
+        }
+
+        .status-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .status-badge {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .member-item {
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            margin-bottom: 0.375rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .member-item:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 0, 60, 0.3);
+            transform: translateX(4px);
+        }
+
+        .team-lead-item {
+            padding: 0.5rem;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.15), rgba(255, 0, 60, 0.08));
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .team-lead-item:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.25), rgba(255, 0, 60, 0.12));
+            border-color: rgba(255, 0, 60, 0.5);
+            transform: translateX(4px);
+        }
+
+        .svg-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .svg-icon-sm {
+            width: 14px;
+            height: 14px;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 0, 60, 0.1);
+            color: #ff003c;
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: #ff003c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.3);
+        }
+
+        .toggle-btn:active {
+            transform: translateY(0);
+        }
+
+        .approve-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .approve-btn:active {
+            transform: translateY(0);
+        }
+
+        .revert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);
+        }
+
+        .revert-btn:active {
+            transform: translateY(0);
+        }
+
+        .members-list {
+            margin-top: 0.75rem;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+
+        .members-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .members-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+
+        .members-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 0, 60, 0.5);
+            border-radius: 3px;
+        }
+
+        .members-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 0, 60, 0.7);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-red);
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-input.error {
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .member-section {
+            background: rgba(255, 0, 60, 0.05);
+            border-left: 3px solid rgba(255, 0, 60, 0.5);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .member-section.active {
+            background: rgba(255, 0, 60, 0.1);
+            border-left-color: var(--primary-red);
+        }
+
+        .member-title {
+            color: var(--primary-red);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .optional-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .payment-info {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .payment-button {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            margin-top: 1.5rem;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-button:hover {
+            background: #ff335c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
+        }
+
+        .payment-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .payment-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .next-steps {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .next-steps-title {
+            color: var(--primary-red);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .next-steps-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .next-steps-list li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .next-steps-list li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: var(--primary-red);
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(17, 17, 17, 0.95);
+            border: 2px solid var(--primary-red);
+            border-radius: 10px;
+            padding: 2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        /* Mobile modal positioning */
+        @media (max-width: 768px) {
+            .modal-content {
+                position: fixed;
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        .modal-success {
+            color: #00ff88;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-red);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .toast-container {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        .toast {
+            background: rgba(17, 17, 17, 0.95);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .toast {
+                transform: translateY(-100px);
+            }
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left-color: #00ff88;
+        }
+
+        .toast.error {
+            border-left-color: #ff4444;
+        }
+
+        .toast.warning {
+            border-left-color: #ffaa00;
+        }
+
+        .toast.info {
+            border-left-color: var(--primary-blue);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            color: #00ff88;
+        }
+
+        .toast.error .toast-icon {
+            color: #ff4444;
+        }
+
+        .toast.warning .toast-icon {
+            color: #ffaa00;
+        }
+
+        .toast.info .toast-icon {
+            color: var(--primary-blue);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .toast-message {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .toast-close:hover {
+            color: #fff;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Heading */
+        .smallboy {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: #1ba8ff;
+            text-shadow: 0 0 5px #000000;
+            font-family: 'valorant', sans-serif;
+            opacity: 95%;
+            font-weight: 900;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid var(--primary-red);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================= RESPONSIVE FIXES ================= */
+
+
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .title-reveal {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .smallboy {
+                font-size: 1.5rem;
+                letter-spacing: 0.15em;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            /* Responsive background for mobile */
+            body {
+                background-image: url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png');
+                background-size: auto;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+
+            .title-reveal {
+                font-size: 1.8rem;
+            }
+
+            .smallboy {
+                font-size: 1.2rem;
+                text-align: center;
+                color: #009dff;
+            }
+
+            .registration-container {
+                clip-path: none;
+                border-radius: 10px;
+            }
+
+            .member-section {
+                padding: 1rem;
+            }
+
+            /* Mobile Padding Optimizations */
+            .container {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+
+            .team-card {
+                padding: 1rem !important;
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+            }
+
+            .search-input, .filter-btn {
+                padding: 0.65rem 0.85rem;
+                font-size: 0.95rem;
+            }
+
+            .stats-container {
+                padding: 1rem !important;
+            }
+
+            .stat-item {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .title-reveal {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .smallboy {
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            .member-section {
+                padding: 0.75rem;
+            }
+
+            /* Small Mobile Padding Optimizations */
+            .container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+
+            .team-card {
+                padding: 0.75rem !important;
+                margin-left: 0.25rem;
+                margin-right: 0.25rem;
+            }
+
+            .search-input, .filter-btn {
+                padding: 0.6rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .stats-container {
+                padding: 0.75rem !important;
+            }
+
+            .stat-item {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .team-name {
+                font-size: 1rem;
+            }
+
+            .member-list {
+                font-size: 0.65rem;
+            }
+        }
+
+        #desktop-bg-video {
+            animation: fadeInVideo 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center group">
+
+                <span class="text-2xl font-bold text-white ml-3"
+                    style="font-family: 'valorant', sans-serif;">ASTRISK</span>
+
+            </a>
+            <a><img src="https://envs.sh/Lau.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            </a>
+            <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
+                <a href="/#about" class="relative group py-1">
+                    <span>About</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="/#events" class="relative group py-1">
+                    <span>Events</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="/#schedule" class="relative group py-1">
+                    <span>Schedule</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="/#sponsors" class="relative group py-1">
+                    <span>Sponsors</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="game.html" class="relative group py-1">
+                    <span>Rules</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+            </div>
+            <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            <div class="hidden md:flex items-center gap-3">
+                <button id="export-btn" onclick="exportToJSON()" class="hidden flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded transition shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m14-7l-5 5m0 0l-5-5m5 5V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Export
+                </button>
+                <button id="auth-btn" onclick="toggleAuth()" class="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
+                        <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span id="auth-btn-text">Login</span>
+                </button>
+                <a href="/"
+                    class="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition shadow-lg uppercase tracking-wider text-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Go Back
+                </a>
+            </div>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="md:hidden">
+            <a href="/#about" class="block py-3 px-4 text-sm">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 16v-4m0-4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>About</a>
+            <a href="/#events" class="block py-3 px-4 text-sm">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>Events</a>
+            <a href="/#schedule" class="block py-3 px-4 text-sm">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>Schedule</a>
+            <a href="/#sponsors" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>Sponsors</a>
+            <a href="game.html" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M9 12h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>Rules</a>
+            <button id="mobile-export-btn" onclick="exportToJSON()" class="hidden py-3 px-4 text-sm w-full text-left flex items-center">
+                <span class="mobile-menu-icon" style="background: rgba(0, 255, 247, 0.2); border-color: rgba(0, 255, 247, 0.4);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m14-7l-5 5m0 0l-5-5m5 5V3" stroke="#00fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>Export JSON
+            </button>
+            <button onclick="toggleAuth()" class="py-3 px-4 text-sm w-full text-left flex items-center">
+                <span class="mobile-menu-icon" style="background: rgba(255, 0, 60, 0.2); border-color: rgba(255, 0, 60, 0.4);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span><span id="mobile-auth-btn-text">Login</span>
+            </button>
+            <a href="/" class="py-3 px-4 text-sm flex items-center gap-2">
+                <span class="mobile-menu-icon" style="background: rgba(255, 0, 60, 0.2); border-color: rgba(255, 0, 60, 0.4);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span>Go Back</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-gray-900 border-2 border-red-500 rounded-xl p-8 max-w-md w-full mx-4 relative" style="background: linear-gradient(145deg, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98)); box-shadow: 0 20px 60px rgba(255, 0, 60, 0.4);">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="text-center mb-6">
+                <div class="mb-4" style="display: flex; justify-content: center;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="11" width="14" height="10" rx="2" stroke="#ff003c" stroke-width="2"/>
+                        <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="16" r="1.5" fill="#ff003c"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-red-500 mb-2 font-rajdhani uppercase tracking-wider">Authentication Required</h2>
+                <p class="text-gray-400 text-sm">Enter the 4-digit master password to access the teams page</p>
+            </div>
+            
+            <div class="mb-6">
+                <input type="password" id="password-input" maxlength="4" pattern="[0-9]{4}" 
+                    class="w-full px-4 py-3 bg-black border-2 border-gray-700 rounded-lg text-white text-center text-2xl tracking-widest focus:outline-none focus:border-red-500 transition-all"
+                    placeholder="••••" autocomplete="off" style="background: rgba(0, 0, 0, 0.6);">
+                <div id="auth-error" class="text-red-500 text-sm mt-2 text-center" style="display: none;"></div>
+            </div>
+            
+            <button onclick="verifyPassword()" 
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-all duration-200 uppercase tracking-wider font-rajdhani"
+                style="background: linear-gradient(135deg, #ff003c, #cc0030); box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);">
+                Verify
+            </button>
+            
+            <div class="mt-4 text-center">
+                <button onclick="closeAuthModal()" class="text-gray-500 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Continue Without Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="pt-20 pb-12" id="main-content" style="display: none;">
+        <section class="py-6">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="registration-container p-6 md:p-8 reveal">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h2 class="text-3xl font-rajdhani font-bold text-center" style="background: linear-gradient(135deg, #ff003c 0%, #ff003c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Registered Teams</h2>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <p class="text-center text-gray-400 mb-6 font-rajdhani text-sm">Track team registration status in real-time</p>
+                        
+                        <!-- Search and Filter Bar -->
+                        <div class="mb-4 flex flex-col md:flex-row gap-3">
+                            <div class="flex-1 relative">
+                                <div style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="11" cy="11" r="8" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M21 21l-4.35-4.35" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <input type="text" id="search-teams" placeholder="Search teams or colleges..." 
+                                    class="w-full px-3 py-2 bg-rgba(255,255,255,0.05) border border-rgba(255,255,255,0.1) rounded-lg text-white text-sm focus:outline-none focus:border-red-500 transition-all"
+                                    style="background: rgba(255, 255, 255, 0.05); padding-left: 2.5rem;">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="filterTeams('all')" class="filter-btn active px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="all">All</button>
+                                <button onclick="filterTeams('completed')" class="filter-btn px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="completed" style="background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3);">Paid</button>
+                                <button onclick="filterTeams('pending')" class="filter-btn px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="pending" style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.3);">Pending</button>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="flex justify-center gap-6 mb-6">
+                            <div class="stat-card px-4 py-2 rounded-lg text-center" style="background: linear-gradient(135deg, rgba(255, 0, 60, 0.1) 0%, rgba(255, 0, 60, 0.05) 100%); border: 1px solid rgba(255, 0, 60, 0.3);">
+                                <div class="text-2xl font-bold text-red-500" id="total-teams">0</div>
+                                <div class="text-gray-400 text-xs font-rajdhani uppercase">Total</div>
+                            </div>
+                            <div class="stat-card px-4 py-2 rounded-lg text-center" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%); border: 1px solid rgba(0, 255, 136, 0.3);">
+                                <div class="text-2xl font-bold text-green-400" id="paid-teams">0</div>
+                                <div class="text-gray-400 text-xs font-rajdhani uppercase">Paid</div>
+                            </div>
+                            <div class="stat-card px-4 py-2 rounded-lg text-center" style="background: linear-gradient(135deg, rgba(255, 170, 0, 0.1) 0%, rgba(255, 170, 0, 0.05) 100%); border: 1px solid rgba(255, 170, 0, 0.3);">
+                                <div class="text-2xl font-bold text-yellow-400" id="pending-teams">0</div>
+                                <div class="text-gray-400 text-xs font-rajdhani uppercase">Pending</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading Spinner -->
+                        <div id="loading" class="flex justify-center items-center mb-6">
+                            <div class="spinner" style="width: 32px; height: 32px; border-width: 3px;"></div>
+                            <span class="ml-3 text-gray-400 text-sm">Loading teams...</span>
+                        </div>
+
+                        <!-- Teams Grid -->
+                        <div id="teams-list" class="hidden">
+                            <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <!-- Teams will be appended here as cards -->
+                            </div>
+                        </div>
+
+                        <!-- Join Request Modal -->
+                        <div id="joinRequestModal" class="modal" style="display:none;">
+                            <div class="modal-content">
+                                <button class="modal-close" onclick="closeJoinRequestModal()">&times;</button>
+                                <h3 class="text-xl font-rajdhani font-bold text-white mb-4">Request to Join Team</h3>
+                                <p id="jr-team-label" class="text-gray-300 mb-2"></p>
+                                <div class="form-group">
+                                    <label class="form-label">Your Name</label>
+                                    <input id="jr-name" class="form-input" placeholder="Full name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Your Email</label>
+                                    <input id="jr-email" class="form-input" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Contact</label>
+                                    <input id="jr-contact" class="form-input" placeholder="10 digit phone">
+                                </div>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <button onclick="submitJoinRequestFromModal()" class="payment-button">Send Request</button>
+                                    <button onclick="closeJoinRequestModal()" class="payment-button" style="background:#444;">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Lead Code Modal (to view/manage requests) -->
+                        <div id="teamKeyModal" class="modal" style="display:none;">
+                            <div class="modal-content">
+                                <button class="modal-close" onclick="closeTeamKeyModal()">&times;</button>
+                                <h3 class="text-xl font-rajdhani font-bold text-white mb-4">Team Lead Access</h3>
+                                <p id="tk-team-label" class="text-gray-300 mb-2">Enter your 4-digit team code to manage requests for <strong id="tk-team-name"></strong></p>
+                                <div class="form-group">
+                                    <label class="form-label">Team Code (4 digits)</label>
+                                    <input id="tk-code" class="form-input" maxlength="4" placeholder="e.g. 0421">
+                                </div>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <button onclick="verifyTeamKeyFromModal()" class="payment-button">Verify & View Requests</button>
+                                    <button onclick="closeTeamKeyModal()" class="payment-button" style="background:#444;">Cancel</button>
+                                </div>
+                                <div id="tk-requests" style="margin-top:1rem;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="empty-state" class="hidden text-center text-gray-400 mt-6">
+                            <div class="mb-3" style="display: flex; justify-content: center;">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4 22h16" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M14 14.66V17c0 .55.47.98.97 1.21.18.06.35.12.53.21 1.14.53 1.99 1.76 2.36 3.58" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 2H6v7c0 3.87 3.13 7 7 7h2c1.87 0 3-1.13 3-3V2z" stroke="#ff003c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 16c-2.21 0-4-1.79-4-4V9h8v3c0 2.21-1.79 4-4 4z" fill="rgba(255, 0, 60, 0.2)"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-rajdhani font-bold">No teams registered yet.</p>
+                            <p class="text-xs mt-1">Be the first to register!</p>
+                        </div>
+
+                        <!-- No Results State -->
+                        <div id="no-results" class="hidden text-center text-gray-400 mt-6">
+                            <div class="mb-3" style="display: flex; justify-content: center;">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="11" cy="11" r="8" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 21l-4.35-4.35" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 11h6" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-rajdhani font-bold">No teams found</p>
+                            <p class="text-xs mt-1">Try adjusting your search or filter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #ff6b6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTRISK 2025</h3>
+                
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">📸</a>
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">🐦</a>
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">💼</a>
+                </div>
+                
+                <!-- Divider -->
+                <div style="height:1px;background:linear-gradient(90deg, transparent 0%, rgba(255,0,60,0.5) 50%, transparent 100%);margin:2rem 0;"></div>
+                
+                <!-- Copyright -->
+                <p style="font-family:'Rajdhani',sans-serif;font-size:1rem;color:#999;letter-spacing:0.05em;margin-bottom:0.5rem;">
+                    &copy; 2025 <span style="color:#ff003c;font-weight:700;">ACM Student Chapter</span>, Amal Jyothi College of Engineering
+                </p>
+                <p style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span style="color:#ff003c;font-weight:600;">Amal Benny Joseph</span>
+                </p>
+                
+                <!-- Contact Info -->
+                <p style="color:#999;font-size:0.95rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    <span style="color:#ff003c;font-weight:600;">Edwin</span> - <a href="tel:+916282325276" style="color:#ddd;text-decoration:none;transition:color 0.3s ease;" onmouseover="this.style.color='#ff003c';" onmouseout="this.style.color='#ddd';">+91 62823 25276</a>
+                </p>
+                
+                <!-- Contact Button -->
+                <a href="tel:+916282325276" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;margin-top:1.5rem;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎ CALL US</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Backend API URL - Update this to your actual backend URL
+        const API_BASE_URL = '';
+
+        let allTeams = [];
+        let currentFilter = 'all';
+
+        // Check authentication on page load
+        window.addEventListener('load', () => {
+            // Don't require auth on load - just show content
+            showMainContent();
+            fetchTeams();
+        });
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            return isAuthenticated;
+        }
+
+        function showAuthModal() {
+            document.getElementById('auth-modal').style.display = 'flex';
+            
+            // Focus on password input
+            setTimeout(() => {
+                document.getElementById('password-input').focus();
+            }, 100);
+            
+            // Allow Enter key to submit
+            document.getElementById('password-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verifyPassword();
+                }
+            });
+        }
+
+        function showMainContent() {
+            document.getElementById('auth-modal').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+            const passwordInput = document.getElementById('password-input');
+            const errorDiv = document.getElementById('auth-error');
+            passwordInput.value = '';
+            errorDiv.style.display = 'none';
+        }
+
+        async function verifyPassword() {
+            const passwordInput = document.getElementById('password-input');
+            const password = passwordInput.value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            if (password.length !== 4) {
+                errorDiv.textContent = 'Please enter a 4-digit password';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/key`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Save authentication token to localStorage (received from server)
+                    localStorage.setItem('teams_auth', 'true');
+                    localStorage.setItem('auth_token', data.token);  // Save the token
+                    errorDiv.style.display = 'none';
+                    passwordInput.value = '';
+                    document.getElementById('auth-modal').style.display = 'none';
+                    updateAuthButton();
+                    // Reload teams with authentication to get full details
+                    await fetchTeams();
+                    showToast('success', 'Login Successful', 'You can now view all team details', 3000);
+                } else {
+                    errorDiv.textContent = 'Invalid password. Please try again.';
+                    errorDiv.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Connection error. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function toggleAuth() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            
+            if (isAuthenticated) {
+                // Logout - clear both auth flag and token
+                localStorage.removeItem('teams_auth');
+                localStorage.removeItem('auth_token');
+                updateAuthButton();
+                // Reload teams to get masked data from backend
+                fetchTeams();
+                showToast('info', 'Logged Out', 'Sensitive information is now hidden', 3000);
+            } else {
+                // Show login modal
+                showAuthModal();
+            }
+        }
+
+        function exportToJSON() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            
+            if (!isAuthenticated) {
+                showToast('warning', 'Authentication Required', 'Please login to export team data', 3000);
+                return;
+            }
+
+            if (!allTeams || allTeams.length === 0) {
+                showToast('info', 'No Data', 'No teams available to export', 3000);
+                return;
+            }
+
+            try {
+                // Create export data with metadata
+                const exportData = {
+                    exported_at: new Date().toISOString(),
+                    total_teams: allTeams.length,
+                    teams: allTeams
+                };
+
+                // Convert to JSON string with formatting
+                const jsonString = JSON.stringify(exportData, null, 2);
+                
+                // Create blob and download link
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                // Create temporary download link
+                const link = document.createElement('a');
+                link.href = url;
+                
+                // Generate filename with timestamp
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
+                link.download = `astrisk_teams_${timestamp}.json`;
+                
+                // Trigger download
+                document.body.appendChild(link);
+                link.click();
+                
+                // Cleanup
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                showToast('success', 'Export Complete', `Successfully exported ${allTeams.length} teams`, 3000);
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('error', 'Export Failed', 'Failed to export team data. Please try again.', 5000);
+            }
+        }
+
+        function updateAuthButton() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            const authBtnText = document.getElementById('auth-btn-text');
+            const mobileAuthBtnText = document.getElementById('mobile-auth-btn-text');
+            const authBtn = document.getElementById('auth-btn');
+            const exportBtn = document.getElementById('export-btn');
+            const mobileExportBtn = document.getElementById('mobile-export-btn');
+            
+            if (isAuthenticated) {
+                authBtnText.textContent = 'Logout';
+                mobileAuthBtnText.textContent = 'Logout';
+                authBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                authBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                // Show export button when authenticated
+                exportBtn.classList.remove('hidden');
+                mobileExportBtn.classList.remove('hidden');
+            } else {
+                authBtnText.textContent = 'Login';
+                mobileAuthBtnText.textContent = 'Login';
+                authBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                authBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                // Hide export button when not authenticated
+                exportBtn.classList.add('hidden');
+                mobileExportBtn.classList.add('hidden');
+            }
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text, label = 'Text') {
+            if (!text || text === 'N/A' || text === '••••••••••' || text === '••••••••') {
+                showToast('warning', 'Cannot Copy', 'No data available to copy', 2000);
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('success', 'Copied!', `${label} copied to clipboard`, 2000);
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('success', 'Copied!', `${label} copied to clipboard`, 2000);
+                } catch (err) {
+                    showToast('error', 'Copy Failed', 'Failed to copy to clipboard', 3000);
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        // Toast notification system
+        function showToast(type, title, message, duration = 5000) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // Auto remove after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, duration);
+            }
+
+            return toast;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update auth button state
+            updateAuthButton();
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                }
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('search-teams');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                filterAndRenderTeams(searchTerm, currentFilter);
+            });
+
+            // Scroll animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(elem => observer.observe(elem));
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+
+        async function fetchTeams() {
+            const loading = document.getElementById('loading');
+            const teamsList = document.getElementById('teams-list');
+            const emptyState = document.getElementById('empty-state');
+
+            try {
+                // Get authentication status and token from localStorage
+                const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+                const authToken = localStorage.getItem('auth_token');
+                const headers = {};
+                
+                if (isAuthenticated && authToken) {
+                    headers['X-Auth-Token'] = authToken;  // Use saved token
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/teams`, {
+                    headers: headers
+                });
+                const data = await response.json();
+
+                if (data.success && data.teams.length > 0) {
+                    allTeams = data.teams;
+                    updateStats();
+                    renderTeams(allTeams);
+                    teamsList.classList.remove('hidden');
+                } else {
+                    emptyState.classList.remove('hidden');
+                }
+            } catch (error) {
+                showToast('error', 'Fetch Error', 'Failed to load teams. Please try again later.', 5000);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function updateStats() {
+            const total = allTeams.length;
+            const paid = allTeams.filter(t => t.payment_status === 'completed').length;
+            const pending = allTeams.filter(t => t.payment_status === 'pending').length;
+
+            document.getElementById('total-teams').textContent = total;
+            document.getElementById('paid-teams').textContent = paid;
+            document.getElementById('pending-teams').textContent = pending;
+        }
+
+        function renderTeams(teams) {
+            const teamsGrid = document.getElementById('teams-grid');
+            const noResults = document.getElementById('no-results');
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            
+            if (teams.length === 0) {
+                teamsGrid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            teamsGrid.innerHTML = teams.map((team, index) => {
+                const isPaid = team.payment_status === 'completed';
+                const statusColor = isPaid ? 'green' : 'yellow';
+                const statusBg = isPaid ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 170, 0, 0.08)';
+                const statusBorder = isPaid ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)';
+                const statusText = isPaid ? '#00ff88' : '#ffaa00';
+                const memberCount = team.members ? team.members.length : 0;
+                
+                // Status icon SVG
+                const statusIconSvg = isPaid 
+                    ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="12" cy="12" r="10" stroke="#00ff88" stroke-width="2"/>
+                         <path d="M8 12L11 15L16 9" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                       </svg>`
+                    : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="12" cy="12" r="10" stroke="#ffaa00" stroke-width="2"/>
+                         <circle cx="12" cy="12" r="3" fill="#ffaa00"/>
+                       </svg>`;
+                
+                // Generate team lead HTML
+                const teamLeadHtml = team.lead && team.lead.name 
+                    ? `
+                        <div class="team-lead-item">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.375rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span style="color: #ff003c; font-weight: 700; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">LEAD</span>
+                                </div>
+                            </div>
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>${team.lead.name || 'N/A'}</span>
+                                ${team.lead.name && team.lead.name !== 'N/A' && team.lead.name !== '••••••••' ? `
+                                <button onclick="copyToClipboard('${team.lead.name}', 'Name')" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                ` : ''}
+                            </div>
+                            ${team.lead.contact && team.lead.contact !== '••••••••••' ? `
+                            <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>${team.lead.contact || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${team.lead.contact}', 'Phone')" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.25rem; display: flex; align-items: center;" title="Copy phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `
+                    : '';
+                
+                // Generate members list HTML
+                const membersHtml = team.members && team.members.length > 0 
+                    ? team.members.map((member, idx) => `
+                        <div class="member-item">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="12" cy="7" r="4" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span style="color: #999; font-weight: 600; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif;">M${idx + 1}</span>
+                                </div>
+                            </div>
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>${member.name || 'N/A'}</span>
+                                ${member.name && member.name !== 'N/A' && member.name !== '••••••••' ? `
+                                <button onclick="copyToClipboard('${member.name}', 'Name')" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                ` : ''}
+                            </div>
+                            ${member.contact && member.contact !== '••••••••••' ? `
+                            <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>${member.contact || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${member.contact}', 'Phone')" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.25rem; display: flex; align-items: center;" title="Copy phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `).join('')
+                    : '<div style="color: #666; text-align: center; padding: 0.75rem; font-size: 0.75rem;">No members listed</div>';
+                
+                // Generate substitute member HTML
+                const substituteHtml = team.substitute && team.substitute.name
+                    ? `
+                        <div class="member-item" style="border-top: 1px solid rgba(0, 255, 247, 0.2); margin-top: 0.5rem; padding-top: 0.5rem;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="#00fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="9" cy="7" r="4" stroke="#00fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <line x1="19" y1="8" x2="19" y2="14" stroke="#00fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <line x1="22" y1="11" x2="16" y2="11" stroke="#00fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span style="color: #00fff7; font-weight: 700; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">SUB</span>
+                                </div>
+                            </div>
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>${team.substitute.name || 'N/A'}</span>
+                                ${team.substitute.name && team.substitute.name !== 'N/A' && team.substitute.name !== '••••••••' ? `
+                                <button onclick="copyToClipboard('${team.substitute.name}', 'Name')" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                ` : ''}
+                            </div>
+                            ${team.substitute.contact && team.substitute.contact !== '••••••••••' ? `
+                            <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>${team.substitute.contact || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${team.substitute.contact}', 'Phone')" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.25rem; display: flex; align-items: center;" title="Copy phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `
+                    : '';
+                
+                // Combine team lead, members, and substitute
+                const allMembersHtml = teamLeadHtml + membersHtml + substituteHtml;
+                // ensure team name is safe for inline onclick attribute
+                const safeTeamName = (team.team_name || '').replace(/'/g, "\\'");
+                
+                return `
+                    <div class="team-card">
+                        <div class="flex items-start justify-between mb-2">
+                            <div class="flex-1 pr-2">
+                                <div class="text-xs text-gray-600 font-rajdhani uppercase mb-0.5">#${index + 1}</div>
+                                <h3 class="text-sm font-bold text-white font-rajdhani leading-tight" style="color: #fff; word-break: break-word;">${team.team_name}</h3>
+                                ${team.college_name ? `
+                                <div class="text-xs text-gray-400 mt-0.5" style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <polyline points="9 22 9 12 15 12 15 22" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>${team.college_name}</span>
+                                </div>
+                                ` : ''}
+                                <div class="text-xs text-gray-500 mt-1" style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="9" cy="7" r="4" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>${memberCount + 1} members</span>
+                                </div>
+                            </div>
+                            <div class="status-badge" style="background: ${statusBg}; border: 1.5px solid ${statusBorder};">
+                                ${statusIconSvg}
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-0.5 rounded-full text-xs font-bold font-rajdhani uppercase" style="background: ${statusBg}; color: ${statusText}; border: 1px solid ${statusBorder};">
+                                ${team.payment_status}
+                            </span>
+                            ${isPaid 
+                                ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#00ff88" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                   </svg>` 
+                                : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                     <circle cx="12" cy="12" r="10" stroke="#ffaa00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                     <polyline points="12 6 12 12 16 14" stroke="#ffaa00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                   </svg>`
+                            }
+                        </div>
+                        
+                        <!-- Payment Action Buttons (Only for authenticated users) -->
+                        ${isAuthenticated ? `
+                        <div class="payment-actions" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            ${team.payment_status === 'pending' ? `
+                            <button onclick="updatePaymentStatus('${team.team_name}', 'completed', ${index})" 
+                                    class="approve-btn" 
+                                    style="flex: 1; padding: 0.5rem; background: linear-gradient(135deg, #00ff88 0%, #00dd77 100%); border: none; border-radius: 6px; color: #000; font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Approve Payment</span>
+                            </button>
+                            ` : `
+                            <button onclick="updatePaymentStatus('${team.team_name}', 'pending', ${index})" 
+                                    class="revert-btn" 
+                                    style="flex: 1; padding: 0.5rem; background: linear-gradient(135deg, #ff003c 0%, #ff0066 100%); border: none; border-radius: 6px; color: #fff; font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <polyline points="1 4 1 10 7 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Mark Pending</span>
+                            </button>
+                            `}
+                        </div>
+                        ` : ''}
+                        
+                        <!-- Members Toggle Button -->
+                        <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
+                            ${team.is_open ? `<button onclick="openJoinRequestModal('${safeTeamName}')" class="toggle-btn" style="flex:1;background:linear-gradient(135deg,#00fff7,#00c8f0);color:#000;">Request to Join</button>` : ''}
+                            <button onclick="openTeamKeyModal('${safeTeamName}')" class="toggle-btn" style="flex:0 0 160px;background:#222;">Manage Requests</button>
+                        </div>
+
+                        <button onclick="toggleMembers(${index})" class="toggle-btn">
+                            <span id="toggle-text-${index}" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                                </svg>
+                                <span>Show Members</span>
+                            </span>
+                        </button>
+                        
+                        <!-- Members List (Hidden by default) -->
+                        <div id="members-${index}" class="members-list" style="display: none;">
+                            ${allMembersHtml}
+                            ${!isAuthenticated ? `
+                            <div style="background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.3); border-radius: 6px; padding: 0.625rem; margin-top: 0.5rem; text-align: center;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 0.375rem;">
+                                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="#ffaa00" stroke-width="2"/>
+                                    <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#ffaa00" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#ffaa00"/>
+                                </svg>
+                                <p style="color: #ffaa00; font-size: 0.7rem; font-weight: 600; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; letter-spacing: 0.05em;">Login to view contact details</p>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function updatePaymentStatus(teamName, newStatus, index) {
+            const authToken = localStorage.getItem('auth_token');
+            
+            if (!authToken) {
+                showToast('error', 'Unauthorized', 'You must be logged in to update payment status', 3000);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/update-payment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({
+                        team_name: teamName,
+                        status: newStatus
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('success', 'Updated', data.message, 3000);
+                    // Reload teams to reflect the change
+                    await fetchTeams();
+                } else {
+                    showToast('error', 'Error', data.message, 4000);
+                }
+            } catch (error) {
+                showToast('error', 'Network Error', 'Failed to update payment status. Please try again.', 4000);
+            }
+        }
+
+        function toggleMembers(index) {
+            const membersDiv = document.getElementById(`members-${index}`);
+            const toggleText = document.getElementById(`toggle-text-${index}`);
+            
+            if (membersDiv.style.display === 'none') {
+                membersDiv.style.display = 'block';
+                toggleText.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polyline points="18 15 12 9 6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Hide Members</span>
+                `;
+            } else {
+                membersDiv.style.display = 'none';
+                toggleText.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                        <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                    </svg>
+                    <span>Show Members</span>
+                `;
+            }
+        }
+
+        function filterTeams(status) {
+            currentFilter = status;
+            const searchTerm = document.getElementById('search-teams').value.toLowerCase();
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            filterAndRenderTeams(searchTerm, status);
+        }
+
+        function filterAndRenderTeams(searchTerm, status) {
+            let filtered = allTeams;
+            
+            // Filter by status
+            if (status !== 'all') {
+                filtered = filtered.filter(team => team.payment_status === status);
+            }
+            
+            // Filter by search term (search in team name and college name)
+            if (searchTerm) {
+                filtered = filtered.filter(team => 
+                    team.team_name.toLowerCase().includes(searchTerm) ||
+                    (team.college_name && team.college_name.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            renderTeams(filtered);
+        }
+
+        // --- Join Request & Team-Lead access helpers ---
+        let pendingTargetTeam = null;
+
+        function openJoinRequestModal(teamName) {
+            pendingTargetTeam = teamName;
+            document.getElementById('jr-team-label').textContent = `Request to join: ${teamName}`;
+            document.getElementById('joinRequestModal').style.display = 'block';
+        }
+
+        function closeJoinRequestModal(){
+            document.getElementById('joinRequestModal').style.display = 'none';
+            ['jr-name','jr-email','jr-contact'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
+        }
+
+        async function submitJoinRequestFromModal(){
+            const name = document.getElementById('jr-name').value.trim();
+            const email = document.getElementById('jr-email').value.trim();
+            const contact = document.getElementById('jr-contact').value.trim();
+
+            if(!pendingTargetTeam){ showToast('error','No team selected','Please try again',3000); return; }
+            if(!name || !email || !contact){ showToast('error','Missing fields','Please fill name, email and contact',3000); return; }
+
+            try{
+                const resp = await fetch(`${API_BASE_URL}/team/join-request`, {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({team_name: pendingTargetTeam, requester:{name, email, contact}})
+                });
+                const data = await resp.json();
+                if(data.success){
+                    closeJoinRequestModal();
+                    showToast('success','Request Sent', data.message || 'Join request submitted',4000);
+                } else {
+                    showToast('error','Request Failed', data.message || 'Failed to submit request',4000);
+                }
+            }catch(err){
+                console.error(err); showToast('error','Network Error','Failed to contact server',3000);
+            }
+        }
+
+        // Team-lead modal to verify 4-digit code and show pending requests
+        let activeKeyTeam = null;
+        function openTeamKeyModal(teamName){
+            activeKeyTeam = teamName;
+            document.getElementById('tk-team-name').textContent = teamName;
+            document.getElementById('teamKeyModal').style.display = 'block';
+            document.getElementById('tk-requests').innerHTML = '';
+        }
+
+        function closeTeamKeyModal(){
+            document.getElementById('teamKeyModal').style.display = 'none';
+            document.getElementById('tk-code').value = '';
+            document.getElementById('tk-requests').innerHTML = '';
+            activeKeyTeam = null;
+        }
+
+        async function verifyTeamKeyFromModal(){
+            const code = document.getElementById('tk-code').value.trim();
+            if(!activeKeyTeam || !code){ showToast('error','Missing','Team and code required',3000); return; }
+            try{
+                const resp = await fetch(`${API_BASE_URL}/team/key`, {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({team_name: activeKeyTeam, code})
+                });
+                const data = await resp.json();
+                if(data.success){
+                    // store team auth in localStorage for viewing join requests via /teams
+                    localStorage.setItem('team_auth_token', code);
+                    showToast('success','Verified','Team code accepted. Reloading teams...',2000);
+                    await fetchTeams();
+                    // render pending requests in modal by reading allTeams
+                    const team = allTeams.find(t=>t.team_name === activeKeyTeam) || {};
+                    const requests = team.join_requests || [];
+                    renderRequestsInModal(requests);
+                } else {
+                    showToast('error','Invalid','Code invalid for this team',3000);
+                }
+            }catch(err){ console.error(err); showToast('error','Network Error','Failed to contact server',3000); }
+        }
+
+        function renderRequestsInModal(requests){
+            const container = document.getElementById('tk-requests');
+            if(!requests || requests.length===0){ container.innerHTML = '<p class="text-gray-400">No pending requests</p>'; return; }
+            container.innerHTML = requests.map(r=>{
+                return `<div style="padding:0.5rem;border:1px solid rgba(255,255,255,0.05);margin-bottom:0.5rem;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                    <div><div style="font-weight:700">${r.name}</div><div style="font-size:0.85rem;color:#ccc">${r.email} · ${r.contact}</div></div>
+                    <div style="display:flex;gap:0.5rem;"><button onclick="respondToJoin('${activeKeyTeam}','${r.email}','accept')" class="approve-btn" style="background:#00ff88;color:#000;padding:0.4rem 0.6rem;border-radius:6px;border:none;">Accept</button>
+                    <button onclick="respondToJoin('${activeKeyTeam}','${r.email}','decline')" class="revert-btn" style="background:#ff3366;color:#fff;padding:0.4rem 0.6rem;border-radius:6px;border:none;">Decline</button></div></div>`
+            }).join('');
+        }
+
+        async function respondToJoin(teamName, requesterEmail, action){
+            try{
+                const teamAuth = localStorage.getItem('team_auth_token');
+                const headers = {'Content-Type':'application/json'};
+                if(teamAuth) headers['X-Team-Auth'] = teamAuth;
+                const resp = await fetch(`${API_BASE_URL}/team/respond-join`, {method:'POST', headers, body: JSON.stringify({team_name:teamName, requester_email: requesterEmail, action})});
+                const data = await resp.json();
+                if(data.success){ showToast('success','Done', data.message || 'Updated',2000); await fetchTeams(); if(activeKeyTeam) verifyTeamKeyFromModal(); }
+                else showToast('error','Error', data.message || 'Failed to update',3000);
+            }catch(err){ console.error(err); showToast('error','Network Error','Failed to contact server',3000); }
+        }
+    </script>
+    <style>
+        .filter-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: #999;
+            border: 1px solid rgba(255, 0, 60, 0.15);
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255, 0, 60, 0.15);
+            border-color: rgba(255, 0, 60, 0.3);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        
+        .filter-btn.active {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: var(--primary-red);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Lineup - ASTERISK Online Qualifiers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #ff003c;
+            --primary-cyan: #00ffff;
+            --primary-blue: #00d9ff;
+            --tech-purple: #a855f7;
+            --dark-bg: #0a0a0a;
+        }
+
+        /* Custom Scrollbar - Premium Design */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.8), rgba(20, 20, 20, 0.8));
+            border-left: 1px solid rgba(255, 0, 60, 0.2);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(255, 0, 60, 0.8), rgba(220, 38, 38, 0.8));
+            border-radius: 6px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(255, 0, 60, 1), rgba(220, 38, 38, 1));
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 0, 60, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(180deg, rgba(220, 38, 38, 1), rgba(153, 27, 27, 1));
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        /* Firefox Scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 0, 60, 0.8) rgba(10, 10, 10, 0.8);
+        }
+
+        body {
+            background: #000;
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Valorant Background Image */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/54d784be3db8503ec574ff45e912ea098cc10352-854x484.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        /* Dark overlay for better readability */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(0, 0, 0, 0.9) 0%, 
+                rgba(10, 0, 20, 0.85) 30%,
+                rgba(20, 0, 10, 0.85) 70%,
+                rgba(0, 0, 0, 0.9) 100%);
+            z-index: 1;
+        }
+
+        /* Animated background */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(255, 0, 60, 0.12) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 70%, rgba(0, 255, 255, 0.12) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: pan-grid 60s linear infinite;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        @keyframes pan-grid {
+            from { background-position: 0 0; }
+            to { background-position: -1000px -1000px; }
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                transparent 2px,
+                transparent 4px
+            );
+            z-index: 4;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header styles */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(255, 0, 60, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Title styles */
+        .main-title {
+            font-family: 'valorant', sans-serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            background: linear-gradient(135deg, #ff003c 0%, #00ffff 50%, #ff003c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+            text-shadow: 0 0 80px rgba(255, 0, 60, 0.6);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .subtitle {
+            font-family: 'Rajdhani', sans-serif;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Match time indicator */
+        .match-time {
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 217, 255, 0.3));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #00ffff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.25);
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .match-time svg {
+            width: 14px;
+            height: 14px;
+            stroke: #00ffff;
+        }
+
+        .match-time:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.6);
+        }
+
+        /* Match card styles */
+        .match-card {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
+            border: 2px solid rgba(255, 0, 60, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px);
+        }
+
+        .match-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.15), rgba(0, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+            z-index: 0;
+        }
+
+        .match-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 0, 60, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .match-card:hover::before {
+            left: 100%;
+        }
+
+        .match-card:hover::after {
+            opacity: 1;
+        }
+
+        .match-card:hover {
+            border-color: rgba(255, 0, 60, 0.8);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 
+                0 20px 40px rgba(255, 0, 60, 0.5),
+                0 0 80px rgba(0, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(255, 0, 60, 0.2);
+        }
+
+        .match-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Match number badge */
+        .match-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff003c, #ff6b6b);
+            color: #fff;
+            font-family: 'valorant', sans-serif;
+            font-size: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            border: 3px solid #000;
+            box-shadow: 0 8px 30px rgba(255, 0, 60, 0.6);
+            z-index: 10;
+        }
+
+        /* Team styles */
+        .team-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .team-container:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 0, 60, 0.5);
+            transform: translateX(5px);
+        }
+
+        .team-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 10px rgba(255, 0, 60, 0.5);
+            flex: 1;
+        }
+
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.2), rgba(0, 255, 255, 0.2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 2px solid rgba(255, 0, 60, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .team-container:hover .team-logo {
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 0, 60, 0.8);
+        }
+
+        /* VS divider */
+        .vs-divider {
+            font-family: 'valorant', sans-serif;
+            font-size: 2rem;
+            color: #ffd700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 0, 60, 0.4);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            padding: 1rem 0;
+            text-align: center;
+            position: relative;
+            animation: vs-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes vs-pulse {
+            0%, 100% { 
+                text-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 0, 60, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 0, 60, 0.6), 0 0 100px rgba(0, 255, 247, 0.3);
+                transform: scale(1.05);
+            }
+        }
+
+        .vs-divider::before,
+        .vs-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.8), rgba(255, 0, 60, 0.6), transparent);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            animation: line-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes line-pulse {
+            0%, 100% { 
+                opacity: 0.6;
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            }
+            50% { 
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 0, 60, 0.4);
+            }
+        }
+
+        .vs-divider::before { left: 0; }
+        .vs-divider::after { right: 0; }
+
+        /* Hexagon decorations */
+        .hex-decoration {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            opacity: 0.05;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Event info badge - Enhanced */
+        .event-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(168, 85, 247, 0.15));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #00ffff;
+            font-size: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .event-badge:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.7);
+        }
+
+        .event-badge svg {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+            animation: pulse-icon 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-icon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Tournament Bracket Styles */
+        .bracket-container {
+            display: flex;
+            gap: 4rem;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding: 2rem;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: auto;
+            position: relative;
+            max-width: 100%;
+            scroll-behavior: smooth;
+        }
+
+        /* Enhanced scrollbar for bracket container */
+        .bracket-container::-webkit-scrollbar {
+            height: 14px;
+        }
+
+        .bracket-container::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.9), rgba(20, 20, 20, 0.9));
+            border-radius: 8px;
+            margin: 0 1rem;
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .bracket-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.9), rgba(251, 191, 36, 0.9), rgba(255, 0, 60, 0.9));
+            border-radius: 8px;
+            border: 2px solid rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .bracket-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 1), rgba(251, 191, 36, 1), rgba(255, 0, 60, 1));
+            box-shadow: 0 0 25px rgba(255, 0, 60, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .bracket-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(90deg, #ff335c, #ffed4e);
+        }
+
+        .bracket-round {
+            display: flex;
+            flex-direction: column;
+            min-width: 350px;
+            flex-shrink: 0;
+        }
+
+        .round-label {
+            font-family: 'valorant', sans-serif;
+            font-size: 1.1rem;
+            color: #00ffff;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.12), rgba(168, 85, 247, 0.12));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.35);
+            border-radius: 8px;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .round-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.25), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        .round-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 255, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.55);
+        }
+
+        .round-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            to { left: 100%; }
+        }
+
+        .matches-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        /* Adjust spacing for different rounds */
+        .bracket-round:nth-child(2) .matches-column {
+            padding: 3rem 0;
+        }
+
+        .bracket-round:nth-child(3) .matches-column {
+            padding: 7rem 0;
+        }
+
+        .bracket-round:nth-child(4) .matches-column {
+            padding: 15rem 0;
+        }
+
+        .bracket-match {
+            background: linear-gradient(135deg, rgba(25, 25, 25, 0.95), rgba(15, 15, 15, 0.98));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 0, 60, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+            position: relative;
+            z-index: 2147483647;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .bracket-match::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .bracket-match:hover::before {
+            left: 100%;
+        }
+
+        .bracket-match:hover {
+            border-color: rgba(255, 0, 60, 0.7);
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 30px rgba(255, 0, 60, 0.3),
+                0 0 40px rgba(255, 0, 60, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .match-badge {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.3), rgba(255, 0, 60, 0.2));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #ff003c;
+            font-family: 'valorant', sans-serif;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 0, 60, 0.5);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            box-shadow: 0 2px 10px rgba(255, 0, 60, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .match-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.5);
+        }
+
+        .bracket-team {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(10, 10, 10, 0.7));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative corner accents */
+        .bracket-team::before,
+        .bracket-team::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 0, 60, 0.4);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .bracket-team::before {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 8px;
+        }
+
+        .bracket-team::after {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 8px;
+        }
+
+        .bracket-team:hover::before,
+        .bracket-team:hover::after {
+            opacity: 1;
+            border-color: rgba(255, 0, 60, 0.8);
+        }
+
+        .bracket-team:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.15), rgba(10, 10, 10, 0.8));
+            border-color: rgba(255, 0, 60, 0.6);
+            transform: translateX(4px) scale(1.02);
+            box-shadow: 0 4px 16px rgba(255, 0, 60, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .team-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.15), rgba(0, 0, 0, 0.6));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .team-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(255, 0, 60, 0.5);
+        }
+
+        .team-icon svg {
+            width: 28px;
+            height: 28px;
+            color: #ff003c;
+            filter: drop-shadow(0 0 6px rgba(255, 0, 60, 0.8));
+        }
+
+        .team-seed {
+            font-family: 'valorant', sans-serif;
+            font-size: 0.8rem;
+            color: #ff003c;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.25), rgba(255, 0, 60, 0.15), rgba(220, 38, 38, 0.2));
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 0, 60, 0.4);
+            min-width: 36px;
+            text-align: center;
+            font-weight: 700;
+            box-shadow: 
+                0 2px 8px rgba(255, 0, 60, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-seed::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .bracket-team:hover .team-seed {
+            border-color: rgba(255, 0, 60, 0.8);
+            box-shadow: 
+                0 4px 16px rgba(255, 0, 60, 0.5),
+                0 0 20px rgba(255, 0, 60, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .bracket-team:hover .team-seed::before {
+            left: 100%;
+        }
+
+        .bracket-team-name {
+            flex: 1;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #e5e5e5;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bracket-team:hover .bracket-team-name {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+        }
+
+        .bracket-vs {
+            text-align: center;
+            font-family: 'valorant', sans-serif;
+            font-size: 0.9rem;
+            color: #ff003c;
+            padding: 0.75rem 0;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+            position: relative;
+        }
+
+        .bracket-vs::before,
+        .bracket-vs::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.5), transparent);
+        }
+
+        .bracket-vs::before {
+            left: 10%;
+        }
+
+        .bracket-vs::after {
+            right: 10%;
+        }
+
+        /* Connector lines */
+        .connector-right {
+            position: absolute;
+            right: -4rem;
+            top: 50%;
+            width: 4rem;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.5), rgba(255, 0, 60, 0.2));
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .connector-right::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            background: #ff003c;
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+            box-shadow: 0 0 8px rgba(255, 0, 60, 0.8);
+        }
+
+        /* Hide last round connectors */
+        .bracket-round:last-child .connector-right {
+            display: none;
+        }
+
+        /* Placeholder matches */
+        .bracket-match-placeholder {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.4), rgba(20, 20, 20, 0.6));
+            backdrop-filter: blur(10px);
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            position: relative;
+            z-index: 2147483647;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .bracket-match-placeholder:hover {
+            opacity: 0.7;
+        }
+
+        .bracket-match-placeholder.finals {
+            border-color: rgba(255, 215, 0, 0.4);
+            opacity: 0.7;
+        }
+
+        .tbd-team {
+            padding: 0.65rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 0.4rem 0;
+            text-align: center;
+            color: #555;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.85rem;
+        }
+
+        .trophy-icon {
+            text-align: center;
+            margin-top: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: grayscale(100%) brightness(0.5);
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .trophy-icon svg {
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        .bracket-match-placeholder.finals .trophy-icon,
+        .bracket-match .trophy-icon {
+            filter: none;
+            opacity: 1;
+        }
+
+        /* Mobile Vertical Stack Design - Compact VS Cards */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .bracket-container {
+                display: flex;
+                flex-direction: column;
+                padding: 0.75rem;
+                overflow-x: hidden;
+                overflow-y: visible;
+                gap: 1rem;
+                min-height: auto;
+            }
+
+            /* Hide scrollbar completely */
+            .bracket-container::-webkit-scrollbar {
+                display: none;
+            }
+
+            .bracket-container {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .bracket-round {
+                display: block;
+                width: 100%;
+                margin: 0;
+                min-width: auto;
+                position: relative;
+            }
+
+            .bracket-round:first-child {
+                margin-left: 0;
+            }
+
+            .bracket-round:last-child {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .round-label {
+                font-size: 1rem;
+                padding: 0.65rem 1rem;
+                margin-bottom: 0.85rem;
+                background: linear-gradient(135deg, rgba(255, 0, 60, 0.25), rgba(255, 215, 0, 0.25));
+                border: 1.5px solid rgba(255, 0, 60, 0.6);
+                box-shadow: 
+                    0 3px 15px rgba(255, 0, 60, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+
+            .matches-column {
+                gap: 0.75rem;
+                padding: 0 !important;
+            }
+
+            /* Compact VS Card Design */
+            .bracket-match,
+            .bracket-match-placeholder {
+                margin: 0;
+                padding: 0.85rem;
+                border-width: 1.5px;
+                border-radius: 12px;
+                box-shadow: 
+                    0 4px 15px rgba(0, 0, 0, 0.4),
+                    0 0 20px rgba(255, 0, 60, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+                background: linear-gradient(135deg, rgba(18, 18, 18, 0.97), rgba(10, 10, 10, 0.99));
+            }
+
+            .bracket-match:active {
+                transform: scale(0.98);
+                transition: transform 0.12s ease;
+            }
+
+            /* Compact Team Rows */
+            .bracket-team {
+                padding: 0.6rem 0.7rem;
+                border-radius: 8px;
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(5, 5, 5, 0.75));
+                gap: 0.6rem;
+                margin: 0.35rem 0;
+                border: 1px solid rgba(255, 0, 60, 0.15);
+            }
+
+            .bracket-team:active {
+                background: linear-gradient(135deg, rgba(255, 0, 60, 0.12), rgba(5, 5, 5, 0.8));
+                border-color: rgba(255, 0, 60, 0.3);
+            }
+
+            /* Smaller Team Icons */
+            .team-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+            }
+
+            .team-icon svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            /* Team Names - Compact */
+            .bracket-team-name {
+                font-size: 0.9rem;
+                font-weight: 700;
+                line-height: 1.2;
+                letter-spacing: 0.02em;
+            }
+
+            /* Seed Badge - Smaller */
+            .team-seed {
+                font-size: 0.75rem;
+                min-width: 30px;
+                padding: 0.25rem 0.45rem;
+                font-weight: 800;
+                border-radius: 5px;
+            }
+
+            /* Match Badge - Compact */
+            .match-badge {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.6rem;
+                top: -8px;
+                left: 8px;
+                border-radius: 6px;
+            }
+
+            /* VS Divider - Minimal */
+            .bracket-vs {
+                font-size: 0.75rem;
+                padding: 0.3rem 0;
+                margin: 0.2rem 0;
+                letter-spacing: 0.1em;
+            }
+
+            .bracket-vs::before,
+            .bracket-vs::after {
+                width: 15%;
+                opacity: 0.5;
+            }
+
+            .bracket-vs::before {
+                left: 15%;
+            }
+
+            .bracket-vs::after {
+                right: 15%;
+            }
+
+            /* Hide connectors */
+            .connector-right {
+                display: none;
+            }
+
+            /* Match time - mobile */
+            .match-time {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.5rem;
+                top: -7px;
+                right: 8px;
+                gap: 0.25rem;
+            }
+
+            .match-time svg {
+                width: 11px;
+                height: 11px;
+            }
+
+            /* Countdown timer - mobile */
+            .countdown-timer {
+                font-size: 0.6rem;
+                padding: 0.25rem 0.45rem;
+                top: -7px;
+                left: 8px;
+                gap: 0.25rem;
+            }
+
+            .countdown-timer svg {
+                width: 10px;
+                height: 10px;
+            }
+
+            /* Header badges */
+            .event-badge {
+                font-size: 0.75rem;
+                padding: 0.45rem 0.85rem;
+            }
+
+            .event-badge svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            /* Title sizing */
+            .main-title {
+                font-size: 2.25rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 1.25rem;
+                letter-spacing: 0.2em;
+            }
+
+            /* TBD Placeholders */
+            .tbd-team {
+                padding: 0.55rem;
+                font-size: 0.85rem;
+            }
+
+            .trophy-icon {
+                margin-top: 0.6rem;
+            }
+
+            .trophy-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            /* Hide swipe/progress indicators for vertical stack */
+            .swipe-indicator,
+            .scroll-progress {
+                display: none !important;
+            }
+
+            /* Haptic feedback visual */
+            @keyframes tap-feedback {
+                0% { transform: scale(1); }
+                50% { transform: scale(0.97); opacity: 0.92; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+
+            .bracket-match:active {
+                animation: tap-feedback 0.15s ease;
+            }
+
+            /* Section divider - Subtle */
+            .bracket-round::after {
+                content: '';
+                position: absolute;
+                bottom: -0.5rem;
+                left: 20%;
+                right: 20%;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.2), rgba(255, 215, 0, 0.2), transparent);
+            }
+
+            .bracket-round:last-child::after {
+                display: none;
+            }
+
+            /* Reduce header spacing */
+            .hero-section {
+                padding: 1.25rem 0.85rem !important;
+                min-height: auto !important;
+            }
+
+            .hex-decoration {
+                display: none;
+            }
+
+            /* Compact padding for content */
+            main.container {
+                padding: 0.75rem !important;
+            }
+
+            /* Force consistent stacking on mobile so cards remain tappable/visible */
+            .bracket-match,
+            .bracket-match-placeholder,
+            .bracket-team {
+                z-index: 2147483647 !important;
+                position: relative !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+            }
+
+            /* When a card is interacted with on mobile, keep it visible */
+            .force-visible {
+                opacity: 1 !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                z-index: 2147483647 !important;
+                pointer-events: auto !important;
+            }
+
+            /* Score display - mobile compact */
+            .bracket-team span[style*="font-size"] {
+                font-size: 1rem !important;
+                margin-left: 0.4rem;
+            }
+
+            /* Active match glow - toned down for mobile */
+            .bracket-match[style*="border: 2px solid #00ff00"] {
+                box-shadow: 
+                    0 2px 12px rgba(0, 255, 0, 0.3),
+                    0 0 20px rgba(0, 255, 0, 0.15) !important;
+            }
+        }
+
+        /* Tablet responsive */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .bracket-container {
+                gap: 2rem;
+                padding: 1.5rem;
+            }
+
+            .bracket-round {
+                min-width: 260px;
+            }
+
+            .connector-right {
+                width: 2rem;
+                right: -2rem;
+            }
+
+            .round-label {
+                font-size: 1rem;
+                padding: 0.85rem;
+            }
+
+            .bracket-match {
+                padding: 1.2rem;
+            }
+        }
+
+        /* Desktop enhancement */
+        @media (min-width: 1400px) {
+            .bracket-container {
+                gap: 5rem;
+            }
+
+            .bracket-round {
+                min-width: 380px;
+            }
+
+            .connector-right {
+                width: 5rem;
+                right: -5rem;
+            }
+
+            .bracket-match {
+                padding: 1.5rem;
+            }
+
+            .round-label {
+                font-size: 1.2rem;
+                padding: 0.85rem 1.75rem;
+            }
+
+            .bracket-team-name {
+                font-size: 1rem;
+            }
+
+            .team-seed {
+                font-size: 0.9rem;
+                min-width: 40px;
+            }
+        }
+
+        /* Ultra-wide screens */
+        @media (min-width: 1920px) {
+            .bracket-container {
+                gap: 6rem;
+            }
+
+            .bracket-round {
+                min-width: 400px;
+            }
+
+            .connector-right {
+                width: 6rem;
+                right: -6rem;
+            }
+        }
+
+        .bracket-team.eliminated {
+            opacity: 0.4;
+            filter: grayscale(80%);
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: rgba(100, 100, 100, 0.3) !important;
+        }
+
+        .bracket-team:hover.eliminated {
+            opacity: 0.5;
+        }
+
+        /* Glow effects */
+        .glow-red {
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
+        }
+
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text Selection Styling */
+        ::selection {
+            background: rgba(255, 0, 60, 0.4);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 0, 60, 0.8);
+        }
+
+        ::-moz-selection {
+            background: rgba(255, 0, 60, 0.4);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 0, 60, 0.8);
+        }
+
+        /* Focus States for Accessibility */
+        *:focus-visible {
+            outline: 2px solid rgba(255, 0, 60, 0.6);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Enhanced Link Hover */
+        a {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        a:not(.no-underline)::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff003c, #ffd700);
+            transition: width 0.3s ease;
+        }
+
+        a:not(.no-underline):hover::after {
+            width: 100%;
+        }
+
+        /* Smooth Scrolling Enhancement */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Floating Animation for Decorative Elements */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Glow Pulse Animation */
+        @keyframes glow-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 0, 60, 0.8), 0 0 60px rgba(255, 0, 60, 0.4);
+            }
+        }
+
+        /* Apply to interactive elements */
+        button, .btn, .interactive {
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animated"></div>
+    <div class="bg-grid"></div>
+    <div class="scanlines"></div>
+    
+    <!-- Hexagon decorations -->
+    <div class="hex-decoration" style="top: 10%; left: 5%;">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" stroke="#ff003c" stroke-width="2"/>
+        </svg>
+    </div>
+    <div class="hex-decoration" style="top: 60%; right: 8%; animation-delay: 2s;">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" stroke="#00ffff" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="glassmorphic-nav sticky top-0 z-50">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="/" class="flex items-center group">
+                    <span class="text-2xl font-bold text-white" style="font-family: 'valorant', sans-serif;">ASTERISK</span>
+                </a>
+                <a href="/" class="flex items-center gap-2 text-white font-bold py-2 px-6 rounded transition shadow-lg uppercase tracking-wider text-sm font-rajdhani" style="background: linear-gradient(135deg, #ff003c, #cc0030); border: 1px solid rgba(255, 0, 60, 0.5); box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Go Back
+                </a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-12">
+            <!-- Title Section -->
+            <div class="text-center mb-12 reveal">
+                <h1 class="main-title mb-4">Asterisk</h1>
+                <p class="subtitle mb-4">ONLINE QUALIFIERS - ROUND OF 18</p>
+                <div class="flex justify-center gap-4 flex-wrap">
+                    <div class="event-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>OCT 16, 2025 (THU PM)</span>
+                    </div>
+                    <div class="event-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+                        </svg>
+                        <span>18 TEAMS</span>
+                    </div>
+                    <div class="event-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>9 WINNERS + BEST LOSER</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tournament Bracket Tree -->
+            <div class="bracket-container">
+                <!-- Round 1 (Round of 18) -->
+                <div class="bracket-round">
+                    <div class="round-label">ROUND OF 18</div>
+                    <div class="matches-column">
+                        <!-- Matches will be loaded dynamically from API -->
+                    </div>
+                </div>
+
+                <!-- Round 2 Placeholder (Quarterfinals) -->
+                <div class="bracket-round">
+                    <div class="round-label">QUARTERFINALS</div>
+                    <div class="matches-column">
+                        <!-- Matches will be loaded dynamically from API -->
+                    </div>
+                </div>
+
+                <!-- Round 3 Placeholder (Semifinals) -->
+                <div class="bracket-round">
+                    <div class="round-label">SEMIFINALS</div>
+                    <div class="matches-column">
+                        <!-- Matches will be loaded dynamically from API -->
+                    </div>
+                </div>
+
+                <!-- Round 4 Placeholder (Grand Final) -->
+                <div class="bracket-round">
+                    <div class="round-label">GRAND FINAL</div>
+                    <div class="matches-column">
+                        <!-- Matches will be loaded dynamically from API -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Info -->
+            <div class="text-center mt-16 reveal" style="transition-delay: 1000ms;">
+                <div class="inline-block bg-gradient-to-r from-red-900/30 to-purple-900/30 border-2 border-cyan-500/50 rounded-xl p-8 backdrop-blur-sm">
+                    <h3 class="text-2xl font-bold mb-6" style="font-family: 'Rajdhani', sans-serif; color: #00ffff; text-transform: uppercase; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(0,255,255,0.6);">
+                        TOURNAMENT INFORMATION
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                        <div class="flex items-start gap-3">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 mt-1">
+                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="#ff003c" stroke-width="2"/>
+                                <path d="M16 2v4M8 2v4M3 10h18" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div>
+                                <p class="font-bold text-red-500 text-sm uppercase" style="font-family: 'Rajdhani', sans-serif;">Date</p>
+                                <p class="text-gray-300 text-sm">October 16, 2025 (Thu PM)</p>
+                                <p class="text-gray-400 text-xs mt-1">Qualifiers: 9:00 PM - 10:45 PM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 mt-1">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="none" stroke="#00ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <p class="font-bold text-cyan-400 text-sm uppercase" style="font-family: 'Rajdhani', sans-serif;">Prize Pool</p>
+                                <p class="text-gray-300 text-sm">₹40,000</p>
+                                <p class="text-gray-400 text-xs mt-1">Prizes for Top 3 Teams</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 mt-1">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="9" cy="7" r="4" stroke="#a855f7" stroke-width="2"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <p class="font-bold text-purple-400 text-sm uppercase" style="font-family: 'Rajdhani', sans-serif;">Format</p>
+                                <p class="text-gray-300 text-sm">5v5 Valorant</p>
+                                <p class="text-gray-400 text-xs mt-1">9 Winners + Best Loser</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tournament Structure Info -->
+                    <div class="mt-6 pt-6 border-t border-cyan-500/30">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                            <div class="bg-gradient-to-br from-red-900/20 to-transparent rounded-lg p-3 border border-red-500/30">
+                                <p class="text-red-400 font-bold text-xs uppercase mb-1" style="font-family: 'Rajdhani', sans-serif;">Round of 18</p>
+                                <p class="text-white text-2xl font-bold" style="font-family: 'valorant', sans-serif;">9</p>
+                                <p class="text-gray-400 text-xs">Matches</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-cyan-900/20 to-transparent rounded-lg p-3 border border-cyan-500/30">
+                                <p class="text-cyan-400 font-bold text-xs uppercase mb-1" style="font-family: 'Rajdhani', sans-serif;">Advance</p>
+                                <p class="text-white text-2xl font-bold" style="font-family: 'valorant', sans-serif;">10</p>
+                                <p class="text-gray-400 text-xs">Teams</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-purple-900/20 to-transparent rounded-lg p-3 border border-purple-500/30">
+                                <p class="text-purple-400 font-bold text-xs uppercase mb-1" style="font-family: 'Rajdhani', sans-serif;">Quarterfinals</p>
+                                <p class="text-white text-2xl font-bold" style="font-family: 'valorant', sans-serif;">5</p>
+                                <p class="text-gray-400 text-xs">Matches</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-yellow-900/20 to-transparent rounded-lg p-3 border border-yellow-500/30">
+                                <p class="text-yellow-400 font-bold text-xs uppercase mb-1" style="font-family: 'Rajdhani', sans-serif;">Courts</p>
+                                <p class="text-white text-2xl font-bold" style="font-family: 'valorant', sans-serif;">A-E</p>
+                                <p class="text-gray-400 text-xs">Locations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-12 mt-16 border-t-2 border-red-900/30 backdrop-blur-sm">
+            <div class="container mx-auto px-6 text-center">
+                <p class="text-gray-400 mb-4" style="font-family: 'Rajdhani', sans-serif;">
+                    &copy; 2025 <span class="text-red-500 font-bold">ASTERISK</span> - ACM Student Chapter, AJCE
+                </p>
+                <p class="text-gray-500 text-sm">
+                    Good luck to all competing teams! 🎮
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Swipe Indicator (Mobile) -->
+    <div class="swipe-indicator">
+        👈 Swipe to explore rounds
+    </div>
+
+    <!-- Progress Dots (Mobile) -->
+    <div class="scroll-progress">
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+    </div>
+
+    <script>
+        // Generate team icon using premium SVG with glassmorphic effects
+        function generateTeamIcon(teamName) {
+            if (!teamName || teamName === 'TBD') return '';
+            
+            // Premium glassmorphic SVG icons - aggressive and adrenaline-fueled
+            const iconMap = {
+                // Fierce Wolf Head
+                'go lose fast': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="wolf-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff003c;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="glow"><feGaussianBlur stdDeviation="1" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    </defs>
+                    <path d="M12 2L8 6L6 8C5 10 5 12 6 14L8 16L10 18C11 19 13 19 14 18L16 16L18 14C19 12 19 10 18 8L16 6L12 2Z" fill="url(#wolf-grad)" opacity="0.3"/>
+                    <circle cx="9" cy="10" r="1.5" fill="#ff003c" filter="url(#glow)"/>
+                    <circle cx="15" cy="10" r="1.5" fill="#ff003c" filter="url(#glow)"/>
+                    <path d="M12 12L10 15L12 16L14 15L12 12Z" fill="#ff003c" opacity="0.8"/>
+                    <path d="M7 5L9 8M17 5L15 8" stroke="#ff003c" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>`,
+                
+                // Royal Crown
+                'gods own country': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="crown-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="shine"><feGaussianBlur stdDeviation="0.5"/></filter>
+                    </defs>
+                    <path d="M4 18h16v2H4v-2z" fill="url(#crown-grad)"/>
+                    <path d="M5 10l2 3 2.5-3 2.5 3 2.5-3 2.5 3 2 -3v8H5v-8z" fill="url(#crown-grad)" opacity="0.9"/>
+                    <circle cx="5" cy="8" r="1.5" fill="#fbbf24" filter="url(#shine)"/>
+                    <circle cx="12" cy="6" r="2" fill="#fbbf24" filter="url(#shine)"/>
+                    <circle cx="19" cy="8" r="1.5" fill="#fbbf24" filter="url(#shine)"/>
+                    <path d="M5 10l2 3 2.5-3 2.5 3 2.5-3 2.5 3 2-3" stroke="#fff" stroke-width="0.5" opacity="0.6"/>
+                </svg>`,
+                
+                // Raging Fire
+                'exodus': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="fire-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2C10 4 9 6 9 8c0 1 0.5 2 1 3-1 0-2 1-2 2 0 2 1.5 4 4 4s4-2 4-4c0-1-1-2-2-2 0.5-1 1-2 1-3 0-2-1-4-3-6z" fill="url(#fire-grad)" opacity="0.9"/>
+                    <path d="M12 6c-1 1-1.5 2-1.5 3 0 0.8 0.5 1.5 1.5 2 1-0.5 1.5-1.2 1.5-2 0-1-0.5-2-1.5-3z" fill="#fef08a" opacity="0.7"/>
+                    <ellipse cx="12" cy="18" rx="4" ry="1" fill="#dc2626" opacity="0.3"/>
+                </svg>`,
+                
+                // Sharp Eagle
+                'domain 5': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="eagle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2L8 6C6 8 5 10 5 12l3 3 4 2 4-2 3-3c0-2-1-4-3-6L12 2z" fill="url(#eagle-grad)" opacity="0.8"/>
+                    <path d="M5 12C3 13 2 14 2 15l3 2 3-2-3-3zM19 12c2 1 3 2 3 3l-3 2-3-2 3-3z" fill="url(#eagle-grad)" opacity="0.6"/>
+                    <circle cx="10" cy="8" r="1" fill="#fff"/>
+                    <circle cx="14" cy="8" r="1" fill="#fff"/>
+                    <path d="M12 10L11 13L12 15L13 13L12 10z" fill="#0284c7"/>
+                </svg>`,
+                
+                // Dragon Head
+                'targaryens': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="dragon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#991b1b;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="dragon-glow"><feGaussianBlur stdDeviation="1.5"/></filter>
+                    </defs>
+                    <path d="M12 2C9 2 7 4 6 6L4 9L3 12c0 2 1 4 3 5l2 2c1 1 2 1 4 1s3 0 4-1l2-2c2-1 3-3 3-5l-1-3-2-3c-1-2-3-4-6-4z" fill="url(#dragon-grad)" opacity="0.9"/>
+                    <path d="M8 8c-1-1-2-1-3 0M16 8c1-1 2-1 3 0" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="9" cy="11" r="1.5" fill="#fbbf24" filter="url(#dragon-glow)"/>
+                    <circle cx="15" cy="11" r="1.5" fill="#fbbf24" filter="url(#dragon-glow)"/>
+                    <path d="M10 14h4l-1 2h-2l-1-2z" fill="#991b1b"/>
+                </svg>`,
+                
+                // Phoenix Wings
+                'hestia': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="phoenix-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#f97316;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2L9 6C7 8 6 10 6 13l3 4 3 2 3-2 3-4c0-3-1-5-3-7L12 2z" fill="url(#phoenix-grad)" opacity="0.9"/>
+                    <path d="M6 13C4 14 3 15 2 17l2 2 2-2V13zM18 13c2 1 3 2 4 4l-2 2-2-2v-4z" fill="url(#phoenix-grad)" opacity="0.7"/>
+                    <ellipse cx="12" cy="10" rx="3" ry="4" fill="#fef08a" opacity="0.6"/>
+                    <circle cx="12" cy="10" r="2" fill="#fff" opacity="0.8"/>
+                </svg>`,
+                
+                // Lightning Bolt
+                'renegades': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="lightning-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="bolt-glow"><feGaussianBlur stdDeviation="1"/></filter>
+                    </defs>
+                    <path d="M13 2L5 13h6l-1 9 10-12h-6l3-8z" fill="url(#lightning-grad)" filter="url(#bolt-glow)"/>
+                    <path d="M13 3L7 12h5l-1 6 7-7h-5l2-8z" fill="#fef08a" opacity="0.9"/>
+                </svg>`,
+                
+                // Explosion
+                'spike rushers': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="spike-grad">
+                            <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1"/>
+                        </radialGradient>
+                    </defs>
+                    <circle cx="12" cy="12" r="10" fill="url(#spike-grad)" opacity="0.3"/>
+                    <path d="M12 2l2 8-2 2-2-2 2-8zM2 12l8-2 2 2-2 2-8-2zM12 22l-2-8 2-2 2 2-2 8zM22 12l-8 2-2-2 2-2 8 2z" fill="url(#spike-grad)"/>
+                    <circle cx="12" cy="12" r="4" fill="#fef08a" opacity="0.8"/>
+                    <circle cx="12" cy="12" r="2" fill="#fff"/>
+                </svg>`,
+                
+                // Skull
+                'blacklisted': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="skull-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#71717a;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#3f3f46;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="12" cy="10" rx="7" ry="8" fill="url(#skull-grad)" opacity="0.9"/>
+                    <ellipse cx="9" cy="9" rx="2" ry="3" fill="#000" opacity="0.9"/>
+                    <ellipse cx="15" cy="9" rx="2" ry="3" fill="#000" opacity="0.9"/>
+                    <path d="M9 16h2v3H9v-3zM13 16h2v3h-2v-3z" fill="#000" opacity="0.8"/>
+                    <ellipse cx="12" cy="15" rx="3" ry="1" fill="#000" opacity="0.5"/>
+                </svg>`,
+                
+                // War Horse
+                'log bait': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="horse-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M6 6C8 4 10 3 12 3s4 1 6 3l1 3v3l-2 3-1 3c-1 2-2 3-4 3s-3-1-4-3l-1-3-2-3V9l1-3z" fill="url(#horse-grad)" opacity="0.8"/>
+                    <path d="M8 6l2-2M16 6l-2-2" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="9" cy="10" r="1.5" fill="#fff" opacity="0.9"/>
+                    <circle cx="15" cy="10" r="1.5" fill="#fff" opacity="0.9"/>
+                    <path d="M10 14c1 1 3 1 4 0" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>`,
+                
+                // Circuit Bot
+                'binary legion': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="circuit-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="4" y="4" width="16" height="16" rx="3" fill="url(#circuit-grad)" opacity="0.3"/>
+                    <rect x="6" y="6" width="12" height="12" rx="2" fill="none" stroke="url(#circuit-grad)" stroke-width="1.5"/>
+                    <circle cx="9" cy="9" r="1.5" fill="#06b6d4"/>
+                    <circle cx="15" cy="9" r="1.5" fill="#06b6d4"/>
+                    <path d="M9 15h6M12 13v4" stroke="#06b6d4" stroke-width="1.5"/>
+                    <path d="M6 12h3M15 12h3" stroke="#06b6d4" stroke-width="1"/>
+                </svg>`,
+                
+                // Battle Bee
+                'vitality': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="bee-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="12" cy="13" rx="6" ry="8" fill="url(#bee-grad)" opacity="0.9"/>
+                    <path d="M12 5h0M12 9h0M12 13h0M12 17h0" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M6 10C4 9 3 8 3 7l2-1 1 4zM18 10c2-1 3-2 3-3l-2-1-1 4z" fill="url(#bee-grad)" opacity="0.7"/>
+                    <circle cx="10" cy="10" r="1" fill="#000"/>
+                    <circle cx="14" cy="10" r="1" fill="#000"/>
+                </svg>`,
+                
+                // Hardened Diamond
+                'hardstuck': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="diamond-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#d946ef;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="diamond-shine"><feGaussianBlur stdDeviation="0.5"/></filter>
+                    </defs>
+                    <path d="M12 2L6 8l6 14 6-14-6-6z" fill="url(#diamond-grad)" opacity="0.9"/>
+                    <path d="M12 4L8 9l4 9 4-9-4-5z" fill="#fff" opacity="0.3" filter="url(#diamond-shine)"/>
+                    <path d="M12 2l-2 6h4l-2-6zM6 8l3 2 3-2-3-2-3 2z" fill="url(#diamond-grad)"/>
+                </svg>`,
+                
+                // Rocket Boost
+                'xlr8': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="rocket-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M3 12l8-8v4h10l-8 8v-4H3z" fill="url(#rocket-grad)" opacity="0.9"/>
+                    <path d="M11 7v10l8-5-8-5z" fill="#06b6d4" opacity="0.7"/>
+                    <circle cx="18" cy="12" r="2" fill="#fef08a" opacity="0.8"/>
+                    <path d="M4 14l-2 4 4-2-2-2z" fill="#f59e0b"/>
+                </svg>`,
+                
+                // Lava Balloon
+                'lavaloon': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="lava-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#f97316;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="12" cy="10" rx="7" ry="9" fill="url(#lava-grad)" opacity="0.9"/>
+                    <ellipse cx="12" cy="9" rx="5" ry="7" fill="#f59e0b" opacity="0.6"/>
+                    <circle cx="10" cy="8" r="1.5" fill="#fef08a" opacity="0.8"/>
+                    <circle cx="14" cy="8" r="1.5" fill="#fef08a" opacity="0.8"/>
+                    <rect x="11" y="19" width="2" height="3" fill="#64748b"/>
+                    <path d="M10 22h4v-1h-4v1z" fill="#475569"/>
+                </svg>`,
+                
+                // Victory Star
+                'ultf4': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="star-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="star-glow"><feGaussianBlur stdDeviation="1"/></filter>
+                    </defs>
+                    <path d="M12 2l3 7h7l-5.5 4.5 2 7.5-6.5-5-6.5 5 2-7.5L2 9h7l3-7z" fill="url(#star-grad)" opacity="0.9" filter="url(#star-glow)"/>
+                    <path d="M12 4l2 5h5l-4 3 1.5 5-4.5-3.5-4.5 3.5 1.5-5-4-3h5l2-5z" fill="#fff" opacity="0.8"/>
+                    <circle cx="12" cy="12" r="2" fill="#fef08a"/>
+                </svg>`,
+                
+                // Sound Wave
+                'labwubwu': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="sound-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="url(#sound-grad)" opacity="0.2"/>
+                    <rect x="5" y="10" width="2" height="4" rx="1" fill="url(#sound-grad)"/>
+                    <rect x="8" y="7" width="2" height="10" rx="1" fill="url(#sound-grad)"/>
+                    <rect x="11" y="5" width="2" height="14" rx="1" fill="url(#sound-grad)"/>
+                    <rect x="14" y="7" width="2" height="10" rx="1" fill="url(#sound-grad)"/>
+                    <rect x="17" y="10" width="2" height="4" rx="1" fill="url(#sound-grad)"/>
+                </svg>`,
+                
+                // Champion Trophy
+                'esports division nitc alpha': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="trophy-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="trophy-shine"><feGaussianBlur stdDeviation="0.5"/></filter>
+                    </defs>
+                    <path d="M8 4h8v6c0 2.2-1.8 4-4 4s-4-1.8-4-4V4z" fill="url(#trophy-grad)"/>
+                    <rect x="10" y="14" width="4" height="5" rx="1" fill="#f59e0b"/>
+                    <rect x="7" y="19" width="10" height="2" rx="1" fill="#dc2626"/>
+                    <circle cx="12" cy="7" r="2" fill="#fef08a" filter="url(#trophy-shine)"/>
+                    <path d="M6 5c-1.5 0-2 1-2 2v1c0 1.1.9 2 2 2M18 5c1.5 0 2 1 2 2v1c0 1.1-.9 2-2 2" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+                </svg>`,
+                
+                // Mystery Badge
+                'unknown name team': `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="mystery-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="mystery-glow"><feGaussianBlur stdDeviation="1"/></filter>
+                    </defs>
+                    <circle cx="12" cy="12" r="10" fill="url(#mystery-grad)" opacity="0.8"/>
+                    <path d="M12 6c-2.2 0-4 1.5-4 3.5 0 0 0 0.5 1 0.5s1-0.5 1-0.5c0-1 0.9-1.5 2-1.5s2 0.5 2 1.5-0.9 1.5-2 1.5c-0.6 0-1 0.4-1 1v2h2v-1.3c1.7-0.5 3-2 3-3.7 0-2-1.8-3.5-4-3.5z" fill="#fff" opacity="0.9"/>
+                    <circle cx="12" cy="17" r="1" fill="#fff" filter="url(#mystery-glow)"/>
+                    <circle cx="12" cy="12" r="8" fill="none" stroke="#a855f7" stroke-width="0.5" opacity="0.6"/>
+                </svg>`
+            };
+            
+            const key = teamName.toLowerCase().trim();
+            return iconMap[key] || `<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1f2937" stroke="#ff003c" stroke-width="2"/><text x="12" y="16" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#fff">${teamName.charAt(0).toUpperCase()}</text></svg>`;
+        }
+
+        // Add team icons to all team names
+        function addTeamIcons() {
+            document.querySelectorAll('.bracket-team').forEach(team => {
+                const nameSpan = team.querySelector('.bracket-team-name');
+                if (nameSpan && !team.querySelector('.team-icon')) {
+                    const teamName = nameSpan.textContent.trim();
+                    const icon = generateTeamIcon(teamName);
+                    
+                    if (icon) {
+                        const iconDiv = document.createElement('div');
+                        iconDiv.className = 'team-icon';
+                        iconDiv.innerHTML = icon; // Use innerHTML for SVG
+                        
+                        // Insert icon after seed and before name
+                        const seed = team.querySelector('.team-seed');
+                        if (seed) {
+                            seed.after(iconDiv);
+                        } else {
+                            team.insertBefore(iconDiv, nameSpan);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize team icons
+        addTeamIcons();
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Add entrance animation on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.reveal').forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('visible');
+                }, index * 100);
+            });
+        });
+
+        // Mobile: Touch feedback for vertical stack
+        if (window.innerWidth <= 768) {
+            const matches = document.querySelectorAll('.bracket-match, .bracket-team');
+            matches.forEach(match => {
+                match.addEventListener('touchstart', function() {
+                    this.style.transition = 'transform 0.15s ease';
+                }, { passive: true });
+            });
+
+            // Smooth scroll reveal animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const mobileObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.bracket-match').forEach((match, index) => {
+                match.style.opacity = '0';
+                match.style.transform = 'translateY(20px)';
+                match.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                // Ensure mobile cards sit above sticky headers and other overlays
+                match.style.zIndex = '2147483647';
+                match.style.willChange = 'transform, opacity';
+                match.style.transitionDelay = `${index * 0.05}s`;
+                mobileObserver.observe(match);
+            });
+
+            // Prevent mobile taps from collapsing/hiding cards: add class on touchstart and remove on touchend
+            document.querySelectorAll('.bracket-match').forEach(match => {
+                match.addEventListener('touchstart', function(e) {
+                    this.classList.add('force-visible');
+
+                    try {
+                        if (window.innerWidth <= 768) {
+                            console.log('%c[DEBUG] touchstart on .bracket-match', 'color: #ff003c; font-weight: bold;');
+                            const comp = window.getComputedStyle(this);
+                            console.log('Target computed:', {transform: comp.transform, zIndex: comp.zIndex, position: comp.position, pointerEvents: comp.pointerEvents});
+
+                            // Walk up ancestors to log potential stacking contexts
+                            let anc = this.parentElement;
+                            const ancestors = [];
+                            while (anc && anc !== document.body) {
+                                const cs = window.getComputedStyle(anc);
+                                ancestors.push({node: anc, transform: cs.transform, zIndex: cs.zIndex, position: cs.position, pointerEvents: cs.pointerEvents});
+                                anc = anc.parentElement;
+                            }
+                            console.log('%c[DEBUG] Ancestor chain (closest first):', 'color: #00d9ff; font-weight: bold;', ancestors.map(a => ({node: a.node.nodeName + (a.node.className ? '.'+a.node.className.split(' ').join('.') : ''), transform: a.transform, zIndex: a.zIndex, position: a.position, pointerEvents: a.pointerEvents})));
+
+                            // Temporarily force ancestors to be visible and non-transforming so card can show — restores after 1.5s
+                            anc = this.parentElement;
+                            const modified = [];
+                            while (anc && anc !== document.body) {
+                                try {
+                                    // save originals
+                                    modified.push({el: anc, origZ: anc.style.zIndex || '', origTransform: anc.style.transform || '', origPointer: anc.style.pointerEvents || '', origOutline: anc.style.outline || ''});
+                                    anc.style.zIndex = '2147483647';
+                                    anc.style.transform = 'none';
+                                    anc.style.pointerEvents = 'auto';
+                                    anc.style.outline = '2px solid rgba(255,0,0,0.12)';
+                                } catch (e) {
+                                    // ignore
+                                }
+                                anc = anc.parentElement;
+                            }
+
+                            setTimeout(() => {
+                                modified.forEach(item => {
+                                    try {
+                                        item.el.style.zIndex = item.origZ;
+                                        item.el.style.transform = item.origTransform;
+                                        item.el.style.pointerEvents = item.origPointer;
+                                        item.el.style.outline = item.origOutline;
+                                    } catch (e) {}
+                                });
+                            }, 1500);
+                        }
+                    } catch (err) {
+                        console.error('Debug override failed:', err);
+                    }
+                }, {passive: true});
+
+                match.addEventListener('touchend', function(e) {
+                    // keep visible for a short time to allow any click handlers to run
+                    setTimeout(() => this.classList.remove('force-visible'), 1200);
+                });
+
+                // Also support click fallback
+                match.addEventListener('click', function(e) {
+                    this.classList.add('force-visible');
+                    setTimeout(() => this.classList.remove('force-visible'), 1200);
+                });
+            });
+        }
+
+        // Parallax effect on scroll for desktop
+        if (window.innerWidth > 768) {
+            const hexDecorations = document.querySelectorAll('.hex-decoration');
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                hexDecorations.forEach((hex, index) => {
+                    const speed = 0.5 + (index * 0.2);
+                    hex.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+                });
+            });
+        }
+
+        // Add hover sound effect simulation (visual feedback)
+        document.querySelectorAll('.bracket-match').forEach(match => {
+            match.addEventListener('mouseenter', () => {
+                match.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+
+        // Keyboard navigation for accessibility
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                const container = document.querySelector('.bracket-container');
+                if (container) {
+                    const scrollAmount = window.innerWidth <= 768 ? window.innerWidth * 0.9 : 400;
+                    const direction = e.key === 'ArrowLeft' ? -1 : 1;
+                    container.scrollBy({
+                        left: scrollAmount * direction,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+
+        // Load all matches from API and render dynamically
+        async function loadMatches() {
+            try {
+                const response = await fetch('https://30c61382b1f2.ngrok-free.app/api/matches');
+                const data = await response.json();
+                
+                if (data.success && data.matches) {
+                    renderBracket(data.matches);
+                    console.log('✅ Loaded', data.matches.length, 'matches from API');
+                }
+            } catch (error) {
+                console.error('❌ Error loading matches:', error);
+            }
+        }
+
+        // Render entire bracket from match data
+        function renderBracket(matches) {
+            // Group matches by round
+            const rounds = {
+                1: { name: 'ROUND OF 16', matches: [] },
+                2: { name: 'QUARTERFINALS', matches: [] },
+                3: { name: 'SEMIFINALS', matches: [] },
+                4: { name: 'GRAND FINAL', matches: [] }
+            };
+
+            matches.forEach(match => {
+                const roundNum = match.round_number || 1;
+                if (rounds[roundNum]) {
+                    rounds[roundNum].matches.push(match);
+                }
+            });
+
+            // Render each round
+            Object.keys(rounds).forEach(roundNum => {
+                const round = rounds[roundNum];
+                const roundElement = document.querySelectorAll('.bracket-round')[roundNum - 1];
+                
+                if (!roundElement) return;
+
+                const matchesColumn = roundElement.querySelector('.matches-column');
+                if (!matchesColumn) return;
+
+                // Clear existing content
+                matchesColumn.innerHTML = '';
+
+                if (round.matches.length === 0) {
+                    // If Quarterfinals are empty, prefill with the provided teams (compact, admin-provided list)
+                    if (parseInt(roundNum) === 2) {
+                        const qfTeams = [
+                            'xlr8',
+                            'gods own country',
+                            'go lose fast',
+                            'hestia',
+                            'spike rushers',
+                            'esports divison nitc', // marked in UI as unable to attend where applicable
+                            'dna',
+                            'renegades',
+                            'log baits',
+                            'vitality'
+                        ];
+
+                        // Pair teams into 5 matches sequentially
+                        const prefillMatches = [];
+                        for (let i = 0; i < 5; i++) {
+                            const t1 = qfTeams[i * 2] || 'TBD';
+                            const t2 = qfTeams[i * 2 + 1] || 'TBD';
+                            prefillMatches.push({
+                                _id: `prefill-qf-${i+1}`,
+                                match_number: 100 + i + 1,
+                                round_number: 2,
+                                team1: t1,
+                                team2: t2,
+                                team1_seed: i * 2 + 1,
+                                team2_seed: i * 2 + 2,
+                                status: (t1 === 'esports divison nitc' || t2 === 'esports divison nitc') ? 'pending' : 'scheduled'
+                            });
+                        }
+
+                        // Render the prefilled quarterfinal matches
+                        prefillMatches.forEach(match => {
+                            const matchElement = createMatchElement(match);
+                            // If a team is marked 'esports divison nitc' and listed as unable to attend, style it
+                            if (match.team1 && match.team1.toLowerCase().includes('esports divison nitc')) {
+                                const teamEl = matchElement.querySelectorAll('.bracket-team')[0];
+                                if (teamEl) { teamEl.classList.add('unavailable'); teamEl.querySelector('.bracket-team-name').innerHTML += ' <small style="color:#ff7a7a;font-weight:700; margin-left:6px; font-size:0.7rem;">(unable to attend)</small>'; }
+                            }
+                            if (match.team2 && match.team2.toLowerCase().includes('esports divison nitc')) {
+                                const teamEl = matchElement.querySelectorAll('.bracket-team')[1];
+                                if (teamEl) { teamEl.classList.add('unavailable'); teamEl.querySelector('.bracket-team-name').innerHTML += ' <small style="color:#ff7a7a;font-weight:700; margin-left:6px; font-size:0.7rem;">(unable to attend)</small>'; }
+                            }
+                            matchesColumn.appendChild(matchElement);
+                        });
+
+                    } else {
+                        // Show placeholders for other empty rounds
+                        let placeholderCount = 1;
+                        if (roundNum == 1) placeholderCount = 9;
+                        else if (roundNum == 2) placeholderCount = 5;
+                        else if (roundNum == 3) placeholderCount = 2;
+                        else if (roundNum == 4) placeholderCount = 1;
+                        for (let i = 0; i < placeholderCount; i++) {
+                            const placeholder = createPlaceholderMatch(roundNum == 4);
+                            matchesColumn.appendChild(placeholder);
+                        }
+                    }
+                } else {
+                    // Render actual matches
+                    round.matches.forEach(match => {
+                        const matchElement = createMatchElement(match);
+                        matchesColumn.appendChild(matchElement);
+                    });
+                }
+            });
+
+            // Re-add team icons
+            addTeamIcons();
+        }
+
+        // Create match element from match data
+        function createMatchElement(match) {
+            const matchDiv = document.createElement('div');
+            matchDiv.className = 'bracket-match reveal';
+            matchDiv.dataset.matchId = match._id;
+            matchDiv.style.transitionDelay = `${match.match_number * 100}ms`;
+
+            // Add active/completed styling
+            if (match.is_active) {
+                matchDiv.style.border = '2px solid #00ff00';
+                matchDiv.style.boxShadow = '0 0 30px rgba(0, 255, 0, 0.6), 0 0 50px rgba(0, 255, 0, 0.3)';
+                matchDiv.classList.add('glow-green');
+            } else if (match.status === 'completed') {
+                matchDiv.style.opacity = '0.7';
+            }
+
+            const team1Eliminated = match.status === 'completed' && match.winner && match.winner !== match.team1;
+            const team2Eliminated = match.status === 'completed' && match.winner && match.winner !== match.team2;
+
+            matchDiv.innerHTML = `
+                <div class="match-badge">M${match.match_number}</div>
+                <div class="bracket-team ${team1Eliminated ? 'eliminated' : ''}" style="${match.winner === match.team1 ? 'background: linear-gradient(135deg, rgba(0, 255, 100, 0.2), rgba(0, 0, 0, 0.5)); border-color: rgba(0, 255, 100, 0.5);' : team1Eliminated ? 'opacity: 0.4; filter: grayscale(80%);' : ''}">
+                    <span class="team-seed">${match.team1_seed || 'TBD'}</span>
+                    <span class="bracket-team-name">${match.team1 || 'TBD'}</span>
+                    ${match.status === 'completed' && match.team1_score !== undefined ? `<span class="ml-auto text-xl font-bold" style="color: ${match.winner === match.team1 ? '#00ff00' : '#666'};">${match.team1_score}</span>` : ''}
+                </div>
+                <div class="bracket-vs">VS</div>
+                <div class="bracket-team ${team2Eliminated ? 'eliminated' : ''}" style="${match.winner === match.team2 ? 'background: linear-gradient(135deg, rgba(0, 255, 100, 0.2), rgba(0, 0, 0, 0.5)); border-color: rgba(0, 255, 100, 0.5);' : team2Eliminated ? 'opacity: 0.4; filter: grayscale(80%);' : ''}">
+                    <span class="team-seed">${match.team2_seed || 'TBD'}</span>
+                    <span class="bracket-team-name">${match.team2 || 'TBD'}</span>
+                    ${match.status === 'completed' && match.team2_score !== undefined ? `<span class="ml-auto text-xl font-bold" style="color: ${match.winner === match.team2 ? '#00ff00' : '#666'};">${match.team2_score}</span>` : ''}
+                </div>
+                ${match.round_number < 4 ? '<div class="connector-right"></div>' : ''}
+                ${match.status === 'completed' && match.round_number === 4 ? `<div class="trophy-icon" style="filter: none; opacity: 1;">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="trophy-gold-${match.match_number}" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                                <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                                <stop offset="100%" style="stop-color:#d97706;stop-opacity:1"/>
+                            </linearGradient>
+                            <filter id="trophy-glow-${match.match_number}"><feGaussianBlur stdDeviation="1"/></filter>
+                        </defs>
+                        <path d="M8 4h8v6c0 2.2-1.8 4-4 4s-4-1.8-4-4V4z" fill="url(#trophy-gold-${match.match_number})"/>
+                        <rect x="10" y="14" width="4" height="5" rx="1" fill="#f59e0b"/>
+                        <rect x="7" y="19" width="10" height="2" rx="1" fill="#d97706"/>
+                        <circle cx="12" cy="7" r="2" fill="#fef08a" filter="url(#trophy-glow-${match.match_number})"/>
+                        <path d="M6 5c-1.5 0-2 1-2 2v1c0 1.1.9 2 2 2M18 5c1.5 0 2 1 2 2v1c0 1.1-.9 2-2 2" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>` : ''}
+            `;
+
+            if (match.is_active) {
+                const badge = matchDiv.querySelector('.match-badge');
+                badge.style.background = 'linear-gradient(135deg, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.3))';
+                badge.style.color = '#00ff00';
+                badge.style.borderColor = 'rgba(0, 255, 0, 0.8)';
+                badge.style.animation = 'pulse 1.5s infinite';
+                badge.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                        <path d="M13 2L5 13h6l-1 9 10-12h-6l3-8z" fill="currentColor"/>
+                    </svg>
+                    M${match.match_number} LIVE`;
+            }
+
+            return matchDiv;
+        }
+
+        // Create placeholder match element
+        function createPlaceholderMatch(isFinals = false) {
+            const div = document.createElement('div');
+            div.className = `bracket-match-placeholder ${isFinals ? 'finals' : ''}`;
+            const trophySVG = `<div class="trophy-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="trophy-placeholder" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                            <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#d97706;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="trophy-glow-placeholder"><feGaussianBlur stdDeviation="1"/></filter>
+                    </defs>
+                    <path d="M8 4h8v6c0 2.2-1.8 4-4 4s-4-1.8-4-4V4z" fill="url(#trophy-placeholder)"/>
+                    <rect x="10" y="14" width="4" height="5" rx="1" fill="#f59e0b"/>
+                    <rect x="7" y="19" width="10" height="2" rx="1" fill="#d97706"/>
+                    <circle cx="12" cy="7" r="2" fill="#fef08a" filter="url(#trophy-glow-placeholder)"/>
+                    <path d="M6 5c-1.5 0-2 1-2 2v1c0 1.1.9 2 2 2M18 5c1.5 0 2 1 2 2v1c0 1.1-.9 2-2 2" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>`;
+            div.innerHTML = `
+                <div class="tbd-team">TBD</div>
+                <div class="bracket-vs">VS</div>
+                <div class="tbd-team">TBD</div>
+                ${isFinals ? trophySVG : '<div class="connector-right"></div>'}
+            `;
+            return div;
+        }
+
+        // Real-time match updates via Server-Sent Events (SSE)
+        let eventSource = null;
+
+        function connectToMatchUpdates() {
+            if (eventSource) {
+                eventSource.close();
+            }
+
+            eventSource = new EventSource('https://30c61382b1f2.ngrok-free.app/api/sse');
+            
+            eventSource.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    console.log('📡 SSE Event:', data.type);
+                    
+                    if (data.type === 'connected') {
+                        console.log('🔴 Connected to real-time match updates');
+                    } else if (data.type === 'match_updated' || data.type === 'match_created' || data.type === 'match_deleted' || data.type === 'match_completed' || data.type === 'active_match_changed' || data.type === 'winners_advanced' || data.type === 'bracket_initialized') {
+                        console.log('⚡ Reloading matches due to:', data.type);
+                        // Reload all matches to reflect changes
+                        loadMatches();
+                    }
+                } catch (error) {
+                    console.error('Error processing SSE message:', error);
+                }
+            };
+            
+            eventSource.onerror = (error) => {
+                console.error('❌ SSE connection error:', error);
+                eventSource.close();
+                // Attempt to reconnect after 5 seconds
+                console.log('🔄 Reconnecting in 5 seconds...');
+                setTimeout(connectToMatchUpdates, 5000);
+            };
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Initializing dynamic match bracket...');
+            await loadMatches();
+            connectToMatchUpdates();
+        });
+    </script>
+</body>
+
+</html>

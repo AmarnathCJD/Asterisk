@@ -1,0 +1,7 @@
+ffmpeg -f gdigrab -framerate 60 -i desktop ^
+       -c:v libx264 -preset ultrafast -b:v 8000k -maxrate 9000k -bufsize 12000k ^
+       -c:a aac -b:a 192k ^
+       -pix_fmt yuv420p ^
+       -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments+append_list ^
+       -hls_segment_filename "hls\stream_%03d.ts" ^
+       "hls\stream.m3u8"

@@ -1,0 +1,6 @@
+hls
+hls/*
+*.log
+*.db
+*.exe
+.env

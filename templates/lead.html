@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Gaming Rig | ASTRISK | ACM AJCE Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ================= BASE STYLES ================= */
+        :root {
+            --primary-red: #ff003c;
+            --primary-blue: #00ffff;
+            --dark-bg: #0a0a0a;
+        }
+
+        body {
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(6px);
+            background-color: #000000;
+        }
+
+        /* Fonts */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Navbar */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.4);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Mobile menu button */
+        #mobile-menu-button {
+            position: relative;
+            z-index: 1000;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-button:hover {
+            background: rgba(255, 0, 60, 0.1);
+            transform: scale(1.05);
+        }
+
+        #mobile-menu-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced mobile menu */
+        #mobile-menu {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 2px solid #ff003c;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 0, 60, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.show {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        #mobile-menu a {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        #mobile-menu button {
+            display: flex;
+            align-items: center;
+        }
+
+        #mobile-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ff003c, #00fff7);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu a:hover::before,
+        #mobile-menu a:active::before {
+            transform: translateX(0);
+        }
+
+        #mobile-menu a:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.15), transparent);
+            padding-left: 1.5rem;
+            color: #00fff7;
+        }
+
+        #mobile-menu a:last-child {
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ff003c, #e6003a);
+            border-left: none;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu a:last-child:hover {
+            background: linear-gradient(90deg, #ff335c, #ff003c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
+        }
+        
+        /* Special styling for Go Back button icon */
+        #mobile-menu a:last-child .mobile-menu-icon {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #mobile-menu a:last-child .mobile-menu-icon svg {
+            color: #ffffff;
+        }
+        
+        #mobile-menu a:last-child:hover .mobile-menu-icon {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        #mobile-menu a:last-child:hover .mobile-menu-icon svg {
+            color: #ffffff;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+        }
+
+        /* Mobile menu icons */
+        .mobile-menu-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a:hover .mobile-menu-icon,
+        #mobile-menu button:hover .mobile-menu-icon {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: rgba(255, 0, 60, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+
+        .mobile-menu-icon svg {
+            color: #ff003c;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a:hover .mobile-menu-icon svg,
+        #mobile-menu button:hover .mobile-menu-icon svg {
+            color: #ff3366;
+            filter: drop-shadow(0 0 8px rgba(255, 0, 60, 0.6));
+        }
+
+        /* Hero BG */
+        .hero-bg {
+            cursor: none;
+            position: relative;
+        }
+
+        #valorant-ranks-bg {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .valo-rank-icon {
+            position: absolute;
+            bottom: -150px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 20%;
+        }
+
+        /* Title Reveal */
+        .title-reveal {
+            color: #0ff;
+            border-color: #0077ff;
+            text-shadow: 0 0 10px #00adbd, 0 0 20px #009dff, 0 0 40px #0077ff;
+            animation: fadeInGlow 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Desktop: Remove glow and set white color for hero title */
+        @media (min-width: 769px) {
+            .title-reveal {
+                color: #fff !important;
+                text-shadow: none !important;
+            }
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                letter-spacing: 0.5em;
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                letter-spacing: normal;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff,
+                    0 0 20px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red);
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff,
+                    0 0 30px var(--primary-red), 0 0 40px var(--primary-red), 0 0 50px var(--primary-red);
+            }
+        }
+
+        /* Countdown */
+        .countdown-box {
+            border: none;
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .section-title {
+            text-shadow: 0 0 10px var(--primary-red), 0 0 20px var(--primary-red);
+        }
+
+        /* Registration Form */
+        .registration-container {
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 0, 60, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(255, 0, 60, 0.2);
+        }
+
+    /* Enhanced Leaderboard Table */
+        .leaderboard-table {
+            background: linear-gradient(145deg, rgba(10, 10, 12, 0.85), rgba(6, 6, 8, 0.9));
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaderboard-table::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(255, 0, 60, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .leaderboard-table:hover::before {
+            opacity: 1;
+        }
+
+        .leaderboard-row {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            margin-bottom: 0.375rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-row:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 0, 60, 0.3);
+            transform: translateX(4px);
+        }
+
+        .leaderboard-rank {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.15), rgba(255, 0, 60, 0.08));
+            color: #ff003c;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 0, 60, 0.3);
+        }
+
+        .leaderboard-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-time {
+            color: #00fff7;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-place {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid var(--primary-red);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .toast-container {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        .toast {
+            background: rgba(17, 17, 17, 0.95);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .toast {
+                transform: translateY(-100px);
+            }
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left-color: #00ff88;
+        }
+
+        .toast.error {
+            border-left-color: #ff4444;
+        }
+
+        .toast.warning {
+            border-left-color: #ffaa00;
+        }
+
+        .toast.info {
+            border-left-color: var(--primary-blue);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            color: #00ff88;
+        }
+
+        .toast.error .toast-icon {
+            color: #ff4444;
+        }
+
+        .toast.warning .toast-icon {
+            color: #ffaa00;
+        }
+
+        .toast.info .toast-icon {
+            color: var(--primary-blue);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .toast-message {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .toast-close:hover {
+            color: #fff;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Heading */
+        .smallboy {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: #1ba8ff;
+            text-shadow: 0 0 5px #000000;
+            font-family: 'valorant', sans-serif;
+            opacity: 95%;
+            font-weight: 900;
+        }
+
+        /* ================= RESPONSIVE FIXES ================= */
+
+
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .title-reveal {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .smallboy {
+                font-size: 1.5rem;
+                letter-spacing: 0.15em;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            /* Responsive background for mobile */
+            body {
+                background-image: url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png');
+                background-size: auto;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+
+            .title-reveal {
+                font-size: 1.8rem;
+            }
+
+            .smallboy {
+                font-size: 1.2rem;
+                text-align: center;
+                color: #009dff;
+            }
+
+            .registration-container {
+                clip-path: none;
+                border-radius: 10px;
+            }
+
+            /* Mobile Padding Optimizations */
+            .container {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+
+            .leaderboard-table {
+                padding: 1rem !important;
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .title-reveal {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .smallboy {
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            /* Small Mobile Padding Optimizations */
+            .container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+
+            .leaderboard-table {
+                padding: 0.75rem !important;
+                margin-left: 0.25rem;
+                margin-right: 0.25rem;
+            }
+
+            .leaderboard-name {
+                font-size: 0.85rem;
+            }
+
+            .leaderboard-time {
+                font-size: 0.85rem;
+            }
+
+            .leaderboard-place {
+                font-size: 0.8rem;
+            }
+        }
+
+        #desktop-bg-video {
+            animation: fadeInVideo 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center group">
+
+                <span class="text-2xl font-bold text-white ml-3"
+                    style="font-family: 'valorant', sans-serif;">ASTRISK</span>
+
+            </a>
+            <a><img src="https://envs.sh/Lau.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            </a>
+            <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
+                <a href="/#about" class="relative group py-1">
+                    <span>About</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="/#events" class="relative group py-1">
+                    <span>Events</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="/#schedule" class="relative group py-1">
+                    <span>Schedule</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="/#sponsors" class="relative group py-1">
+                    <span>Sponsors</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="game.html" class="relative group py-1">
+                    <span>Rules</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+            </div>
+            <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            <a href="/"
+                class="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition shadow-lg uppercase tracking-wider text-sm md:hidden">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Go Back
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="md:hidden">
+            <a href="/#about" class="block py-3 px-4 text-sm">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 16v-4m0-4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>About</a>
+            <a href="/#events" class="block py-3 px-4 text-sm">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>Events</a>
+            <a href="/#schedule" class="block py-3 px-4 text-sm">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>Schedule</a>
+            <a href="/#sponsors" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>Sponsors</a>
+            <a href="game.html" class="block py-3 px-4 text-sm flex items-center">
+                <span class="mobile-menu-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M9 12h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>Rules</a>
+            <a href="/" class="py-3 px-4 text-sm flex items-center gap-2">
+                <span class="mobile-menu-icon" style="background: rgba(255, 0, 60, 0.2); border-color: rgba(255, 0, 60, 0.4);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span>Go Back</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="pt-20 pb-12">
+        <section class="py-6">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="registration-container p-6 md:p-8 reveal">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h2 class="text-3xl font-rajdhani font-bold text-center" style="background: linear-gradient(135deg, #ff003c 0%, #ff003c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Gaming Rig Leaderboard</h2>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <p class="text-center text-gray-400 mb-6 font-rajdhani text-sm">Fastest lap timings - updated in real-time</p>
+                        
+                        <!-- Loading Spinner -->
+                        <div id="loading" class="flex justify-center items-center mb-6">
+                            <div class="spinner" style="width: 32px; height: 32px; border-width: 3px;"></div>
+                            <span class="ml-3 text-gray-400 text-sm">Loading leaderboard...</span>
+                        </div>
+
+                        <!-- Leaderboard Table -->
+                        <div id="leaderboard-list" class="hidden leaderboard-table">
+                            <div id="leaderboard-grid" class="grid grid-cols-1 gap-3">
+                                <!-- Leaderboard rows will be appended here -->
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="empty-state" class="empty-state hidden">
+                            <div class="mb-3" style="display: flex; justify-content: center;">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="12" y1="9" x2="12" y2="15" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="9" y1="12" x2="15" y2="12" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-rajdhani font-bold">No lap times recorded yet</p>
+                            <p class="text-xs mt-1">Check back soon for updates!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #ff6b6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTRISK 2025</h3>
+                
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">📸</a>
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">🐦</a>
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">💼</a>
+                </div>
+                
+                <!-- Divider -->
+                <div style="height:1px;background:linear-gradient(90deg, transparent 0%, rgba(255,0,60,0.5) 50%, transparent 100%);margin:2rem 0;"></div>
+                
+                <!-- Copyright -->
+                <p style="font-family:'Rajdhani',sans-serif;font-size:1rem;color:#999;letter-spacing:0.05em;margin-bottom:0.5rem;">
+                    &copy; 2025 <span style="color:#ff003c;font-weight:700;">ACM Student Chapter</span>, Amal Jyothi College of Engineering
+                </p>
+                <p style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span style="color:#ff003c;font-weight:600;">Amal Benny Joseph</span>
+                </p>
+                
+                <!-- Contact Info -->
+                <p style="color:#999;font-size:0.95rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    <span style="color:#ff003c;font-weight:600;">Edwin</span> - <a href="tel:+916282325276" style="color:#ddd;text-decoration:none;transition:color 0.3s ease;" onmouseover="this.style.color='#ff003c';" onmouseout="this.style.color='#ddd';">+91 62823 25276</a>
+                </p>
+                
+                <!-- Contact Button -->
+                <a href="tel:+916282325276" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;margin-top:1.5rem;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎ CALL US</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Backend API URL - Update this to your actual backend URL
+        const API_BASE_URL = 'https://30c61382b1f2.ngrok-free.app';
+
+        let allLaps = [];
+
+        // Check authentication on page load (if needed for admin features)
+        window.addEventListener('load', () => {
+            fetchLapTimes();
+            connectSSE();
+        });
+
+        async function fetchLapTimes() {
+            const loading = document.getElementById('loading');
+            const leaderboardList = document.getElementById('leaderboard-list');
+            const emptyState = document.getElementById('empty-state');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/lap-times`);
+                const data = await response.json();
+
+                if (data.success && data.lap_times.length > 0) {
+                    allLaps = data.lap_times;
+                    renderLeaderboard(allLaps);
+                    leaderboardList.classList.remove('hidden');
+                    emptyState.classList.add('hidden');
+                } else {
+                    leaderboardList.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                }
+            } catch (error) {
+                showToast('error', 'Fetch Error', 'Failed to load leaderboard. Please try again later.', 5000);
+                leaderboardList.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function renderLeaderboard(laps) {
+            const leaderboardGrid = document.getElementById('leaderboard-grid');
+            
+            // Sort by time ascending
+            laps.sort((a, b) => a.time - b.time);
+            
+            leaderboardGrid.innerHTML = laps.map((lap, index) => {
+                const rank = index + 1;
+                const rankColor = rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : rank === 3 ? '#cd7f32' : '#fff';
+                const rankBg = rank <= 3 ? 'rgba(255, 215, 0, 0.1)' : 'transparent';
+                
+                return `
+                    <div class="leaderboard-row flex items-center justify-between p-3">
+                        <div class="leaderboard-rank w-12 h-12 flex items-center justify-center rounded-full font-bold" style="background: ${rankBg}; color: ${rankColor}; border: 1px solid ${rankColor}20;">
+                            #${rank}
+                        </div>
+                        <div class="leaderboard-name flex-1 ml-4">
+                            ${lap.name}
+                        </div>
+                        <div class="leaderboard-time ml-4">
+                            ${lap.time.toFixed(2)}s
+                        </div>
+                        <div class="leaderboard-place ml-4">
+                            ${lap.place || 'N/A'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function connectSSE() {
+            const eventSource = new EventSource(`${API_BASE_URL}/api/sse`);
+
+            eventSource.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'lap_updated') {
+                        // Refresh leaderboard on update
+                        fetchLapTimes();
+                        showToast('info', 'Update', 'Leaderboard updated with new lap time', 3000);
+                    }
+                } catch (error) {
+                    console.error('SSE parse error:', error);
+                }
+            };
+
+            eventSource.onerror = (error) => {
+                console.error('SSE error:', error);
+                showToast('warning', 'Connection Issue', 'Real-time updates disconnected. Refresh page to reconnect.', 5000);
+                eventSource.close();
+                // Attempt reconnect after 5s
+                setTimeout(connectSSE, 5000);
+            };
+        }
+
+        // Toast notification system (same as team.html)
+        function showToast(type, title, message, duration = 5000) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            if (duration > 0) {
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, duration);
+            }
+
+            return toast;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                }
+            });
+
+            // Scroll animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(elem => observer.observe(elem));
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

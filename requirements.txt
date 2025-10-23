@@ -1,0 +1,6 @@
+aiohttp
+aiohttp-cors
+aiofiles
+motor
+pymongo
+dnspython
