@@ -1,68 +1,128 @@
 # Asterisk Tournament System
 
-A tournament management and live streaming system built for esports events. Handles team registration, match scheduling, live scoring, and HLS streaming with interactive overlays.
+A distributed tournament management and real-time streaming system leveraging HLS (HTTP Live Streaming) protocol for esports events. Built with Python's aiohttp framework for async I/O operations, featuring real-time SSE updates, dual-database persistence, and automated match orchestration.
 
-## Features
+## Technical Stack
 
-- Tournament bracket management
-- Live match streaming with custom overlays
-- Real-time match scoring and updates
-- Team registration and management
-- Pause screen with team statistics
-- WhatsApp notifications integration
-- MongoDB and SQLite data persistence
+- **Backend Framework**: Python aiohttp (async HTTP server)
+- **Streaming Protocol**: HTTP Live Streaming (HLS)
+  - Segmented video delivery (.ts files)
+  - Adaptive bitrate streaming
+  - CORS-enabled endpoints
+- **Real-time Updates**: Server-Sent Events (SSE)
+  - Bi-directional WebSocket fallback
+  - Event-driven architecture
+- **Data Persistence**:
+  - Primary: MongoDB (tournament state)
+  - Backup: SQLite3 (registration data)
+  - In-memory caching for active matches
+- **Notification System**: 
+  - WhatsApp integration via whatsmeow
+  - Real-time event hooks
+  - Rate-limited API endpoints
 
 
-## Screenshots
+## Some Screenshots
 
-### Tournament Control Panel
+### Website Landing Page
 ![Tournament Control](screenshots/dash.png)
 
-### Live Stream with Overlay
+### Team Registration with Team finding system
 ![Live Stream](screenshots/reg.png)
+
+### Live Stream Window
+![Live Stream](screenshots/live.png)
 
 
 ## System Requirements
 
-- Python 3.8+
-- FFmpeg for streaming
-- MongoDB database
-- Node.js (for WhatsApp service)
+- Python 3.8+ (async/await support)
+- FFmpeg with libx264 and AAC codecs
+- MongoDB 4.4+ (replica set recommended)
+- Go 1.19+ (WhatsApp service)
 
-## Setup
+## Deployment
 
-1. Clone the repository
-2. Install Python dependencies:
+1. Clone and configure environment:
    ```bash
+   git clone https://github.com/AmarnathCJD/Asterisk.git
+   cd Asterisk
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
    pip install -r requirements.txt
    ```
-3. Set up environment variables:
+
+2. Configure environment variables:
    ```bash
    cp sample.env .env
-   # Edit .env with your configuration
+   # Required variables:
+   # MONGODB_URL=mongodb://localhost:27017
+   # MASTER_PASSWORD=your_admin_key
+   # STREAM_RETENTION_HOURS=24
    ```
-4. Start the WhatsApp notification service:
+
+3. Deploy WhatsApp notification service:
    ```bash
    cd notification-whatsapp
-   go run main.go
-   ```
-5. Run the main server:
-   ```bash
-   python app.py
-   ```
-6. Start the HLS stream server:
-   ```bash
-   python live.py
+   go mod download
+   go build
+   ./notification-whatsapp  # or notification-whatsapp.exe on Windows
    ```
 
-## Architecture
+4. Initialize streaming server:
+   ```bash
+   python live.py --port 5001 --codec libx264 --preset veryfast
+   ```
 
-- Main server (`app.py`): Tournament logic, API endpoints, core of project
-- Stream server (`live.py`): HLS video streaming, to be deployed on each Device where match observer account is kept, to create stream sources
-- WhatsApp service: Whatsmeow based whatsapp notification service
-- Frontend: HTML/JS for control panels and overlays
-- SSE: Server side events for realtime website updates without refreshing.
+5. Launch main application server:
+   ```bash
+   python app.py --host 0.0.0.0 --port 5000 --workers 4
+   ```
+
+## System Architecture
+
+### Core Components
+
+```
+Asterisk/
+├── app.py           # Main async application server
+├── live.py          # HLS streaming orchestrator
+└── notification-whatsapp/
+    └── main.go      # Go-based notification service
+```
+
+### Service Architecture
+
+```mermaid
+graph TB
+    A[Main Server] --> B[MongoDB]
+    A --> C[SQLite]
+    A --> D[SSE Manager]
+    E[Stream Server] --> F[HLS Segmenter]
+    F --> G[FFmpeg Encoder]
+    A --> H[WhatsApp Service]
+    D --> I[Clients]
+    F --> I
+```
+
+- **Main Server** (`app.py`):
+  - Async tournament state management
+  - RESTful API endpoints (CORS-enabled)
+  - Match orchestration logic
+  - Real-time event propagation
+
+- **Stream Server** (`live.py`):
+  - HLS segment management
+  - FFmpeg process orchestration
+  - Adaptive bitrate streaming
+  - CORS-compliant file serving
+
+- **WhatsApp Service** (`main.go`):
+  - Event-driven notification system
+  - Rate-limited message delivery
+  - Session persistence
+  - Automated reconnection handling
 
 ## License
 
-MIT
+[MIT](LICENSE)
