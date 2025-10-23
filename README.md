@@ -125,4 +125,4 @@ graph TB
 
 ## License
 
-[MIT](LICENSE)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. Copyright (c) 2025 Amarnath C. This software is part of the ASTERISK Tournament Management System developed for ACM AJCE's esports initiatives. While the code is open-source, any commercial use or deployment requires written permission from the project maintainers.
